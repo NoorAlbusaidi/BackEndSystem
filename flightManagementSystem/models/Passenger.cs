@@ -8,9 +8,9 @@ namespace flightManagementSystem.models
     {
         public int passengerId { get; set; } //unique
         public string PassengerName { get; set; }
-        public string passengerEmail { get; set; }
-        public string passengerPhone { get; set; }
-        public string passportNumber { get; set; } //unique
+        public string PassengerEmail { get; set; }
+        public string PassengerPhone { get; set; }
+        public string PassportNumber { get; set; } //unique
         public string PassengerNationality { get; set; }
 
     }
