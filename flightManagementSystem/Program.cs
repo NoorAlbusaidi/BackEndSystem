@@ -114,10 +114,48 @@ namespace flightManagementSystem
             Console.WriteLine("Passenger added successfully with id: "+ p.PassengerId);
 
         }
+
+        public static void AddAircraft() {
+            string model;
+            int totalSeats;
+
+            //validating the model
+            Console.Write("Enter the aircraft's model: ");
+            model = Console.ReadLine();
+            model = model.Trim();
+            
+            while (string.IsNullOrWhiteSpace(model) || !Regex.IsMatch(model, @"^[a-zA-Z0-9\s]+$"))
+            {
+                Console.WriteLine("Invalid model. Try again");
+                Console.Write("Enter the aircraft's model: ");
+                model = Console.ReadLine();
+                model = model.Trim();
+
+            }
+
+            //validating total seats
+            Console.Write("Enter the total seats of the aircraft: ");
+            while (!int.TryParse(Console.ReadLine(), out totalSeats))
+            {
+                Console.WriteLine("Invalid number of seats");
+                Console.Write("Enter the total seats of the aircraft: ");
+            }
+
+            //add an Aircraft
+            Aircraft a = new Aircraft
+            {
+                AircraftModel = model,
+                TotalSeats=totalSeats,
+            };
+
+            context.aircrafts.Add(a);
+
+            Console.WriteLine("Aircraft added successfully with id: " + a.AircraftId);
+        }
         static void Main(string[] args)
         {
             int choice;
-            Console.WriteLine("---Services---");
+            Console.WriteLine("---Flight Management Services---");
             Console.WriteLine("(1)  Register a Passenger");
             Console.WriteLine("(2)  Add an Aircraft");
             Console.WriteLine("(3)  Register a Pilot");
@@ -141,6 +179,7 @@ namespace flightManagementSystem
                         RegisterPassenger();
                         break;
                     case 2:
+                        AddAircraft();
                         break;
                     case 3:
                         break;
