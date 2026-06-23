@@ -24,6 +24,8 @@ namespace flightManagementSystem
             string passengerPhoneNum;
             string passportNum;
             string nationality;
+            int passengerCounter = 1;
+            string passengerId;
 
             //validate the passenger name
             Console.Write("Enter your name: ");
@@ -96,17 +98,20 @@ namespace flightManagementSystem
 
             }
 
+            //generate passenger id
+            passengerId = "P" + passengerCounter.ToString("D3");
+            passengerCounter++;
+
 
             //add a passenger
             context.passengers.Add(new Passenger
             {
+                PassengerId = passengerId,
                 PassengerName = passengerName,
                 PassengerEmail = passengerEmail,
                 PassengerPhone = passengerPhoneNum,
                 PassportNumber = passportNum,
-                PassengerNationality = nationality
-
-
+                PassengerNationality = nationality,
             });
 
 

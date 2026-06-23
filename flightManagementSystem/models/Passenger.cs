@@ -6,7 +6,7 @@ namespace flightManagementSystem.models
 {
     internal class Passenger
     {
-        public int passengerId { get; set; } //unique
+        public string PassengerId { get; set; } //unique
         public string PassengerName { get; set; }
         public string PassengerEmail { get; set; }
         public string PassengerPhone { get; set; }
