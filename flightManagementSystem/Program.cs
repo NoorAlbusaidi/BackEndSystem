@@ -1,6 +1,7 @@
 ﻿using flightManagementSystem.models;
 using Microsoft.Win32;
 using System.Numerics;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Transactions;
 
@@ -151,6 +152,70 @@ namespace flightManagementSystem
             context.aircrafts.Add(a);
 
             Console.WriteLine("Aircraft added successfully with id: " + a.AircraftId);
+        }
+
+        public static void RegisterPilot() {
+            string pilotName;
+            string pilotPhoneNum;
+            string licenseNum;
+
+            Console.Write("Enter pilot name: ");
+            pilotName = Console.ReadLine();
+            pilotName = pilotName.Trim();
+
+            //Regex --> "Does this text look like what I want?"
+            while (string.IsNullOrWhiteSpace(pilotName) || !Regex.IsMatch(pilotName, @"^[a-zA-Z\s]+$"))
+            {
+                Console.WriteLine("Invalid name. Try again");
+                Console.Write("Enter your name: ");
+                pilotName = Console.ReadLine();
+                pilotName = pilotName.Trim();
+            }
+
+            //validating the phone number
+            Console.Write("\nEnter pilot phone number: ");
+            pilotPhoneNum = Console.ReadLine();
+            pilotPhoneNum = pilotPhoneNum.Trim();
+
+            while (string.IsNullOrWhiteSpace(pilotPhoneNum) || !Regex.IsMatch(pilotPhoneNum, @"^[0-9]+$") || pilotPhoneNum.Length != 8)
+            {
+                Console.WriteLine("Invalid phone number. Try again");
+                Console.Write("\nEnter pilot phone number: ");
+                pilotPhoneNum = Console.ReadLine();
+                pilotPhoneNum = pilotPhoneNum.Trim();
+
+            }
+
+            //validating the License Number
+            Console.Write("\nEnter pilot license number: ");
+            licenseNum = Console.ReadLine();
+            licenseNum = licenseNum.Trim();
+
+            while (string.IsNullOrWhiteSpace(licenseNum) || !Regex.IsMatch(licenseNum, @"^[a-zA-Z0-9-]+$"))
+            {
+                Console.WriteLine("Invalid license Number. Try again");
+                Console.Write("\nEnter pilot license number: ");
+                licenseNum = Console.ReadLine();
+                licenseNum = licenseNum.Trim();
+
+            }
+
+
+            //add a pilot
+            Pilot p = new Pilot
+            {
+                PilotName= pilotName,
+                pilotPhone = pilotPhoneNum,
+                PilotLicenseNumber = licenseNum,
+            };
+
+            context.pilots.Add(p);
+
+            Console.WriteLine("Pilot added successfully with id: " + p.PilotId);
+
+ 
+
+
         }
         static void Main(string[] args)
         {
