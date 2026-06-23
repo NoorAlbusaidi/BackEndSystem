@@ -117,6 +117,68 @@ namespace flightManagementSystem
         }
         static void Main(string[] args)
         {
+            int choice;
+            Console.WriteLine("---Services---");
+            Console.WriteLine("(1)  Register a Passenger");
+            Console.WriteLine("(2)  Add an Aircraft");
+            Console.WriteLine("(3)  Register a Pilot");
+            Console.WriteLine("(4)  View All Flights");
+            Console.WriteLine("(5)  Schedule a Flight");
+            Console.WriteLine("(6)  Book a Flight");
+            Console.WriteLine("(7)  Cancel a Booking");
+            Console.WriteLine("(8)  Depart a Flight");
+            Console.WriteLine("(0)  Exit");
+
+            Console.Write("Enter your choice: ");
+            //TryParse(): ignores leading and trailing spaces
+            while (!int.TryParse(Console.ReadLine(), out choice)) {
+                Console.WriteLine("Invalid choice you need to enter one number");
+                Console.Write("Enter your choice: ");
+            }
+
+            while (choice != 0) {
+                switch (choice) {
+                    case 1:
+                        RegisterPassenger();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }//switch (choice)
+                Console.WriteLine("---Services---");
+                Console.WriteLine("(1)  Register a Passenger");
+                Console.WriteLine("(2)  Add an Aircraft");
+                Console.WriteLine("(3)  Register a Pilot");
+                Console.WriteLine("(4)  View All Flights");
+                Console.WriteLine("(5)  Schedule a Flight");
+                Console.WriteLine("(6)  Book a Flight");
+                Console.WriteLine("(7)  Cancel a Booking");
+                Console.WriteLine("(8)  Depart a Flight");
+                Console.WriteLine("(0)  Exit");
+                Console.Write("Enter your choice: ");
+                
+                //validate user choice
+                while (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.WriteLine("Invalid choice you need to enter one number");
+                    Console.Write("Enter your choice: ");
+                }
+
+            }//while (choice != 0)
 
         }
     }
