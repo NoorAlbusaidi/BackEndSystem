@@ -22,6 +22,7 @@ namespace flightManagementSystem.models
             IsAvailable = true;
             PilotId = "P" + counter.ToString("D3");
             counter++;
+            FlightHours = 0; // then will be updated after each flight
         }
 
         public void AssignFlight()

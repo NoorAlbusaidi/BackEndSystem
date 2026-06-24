@@ -217,6 +217,30 @@ namespace flightManagementSystem
 
 
         }
+
+        public static void ViewFlights() {
+            if (context.flights.Count == 0)
+            {
+                Console.WriteLine("No flights available.");
+                return;
+            }
+
+            Console.WriteLine("\n--- All Flights ---");
+
+            foreach (Flight f in context.flights)
+            {
+                Console.WriteLine("-----------------------------------");
+                Console.WriteLine("Flight Code: " + f.FlightCode);
+                Console.WriteLine("Origin: " + f.FlightOrigin);
+                Console.WriteLine("Destination: " + f.FlightDestination);
+                Console.WriteLine("Departure Date: " + f.FlightDepartureDate);
+                Console.WriteLine("Departure Time: " + f.FlightDepartureTime);
+                Console.WriteLine("Available Seats: " + f.AvailableSeats);
+                Console.WriteLine("Ticket Price: " + f.FlightTicketPrice);
+                Console.WriteLine("Status: " + f.FlightStatus);
+            }
+
+        }
         static void Main(string[] args)
         {
             int choice;
@@ -250,6 +274,7 @@ namespace flightManagementSystem
                         RegisterPilot();
                         break;
                     case 4:
+                        ViewFlights();
                         break;
                     case 5:
                         break;
