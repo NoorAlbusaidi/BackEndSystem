@@ -4,18 +4,27 @@ using System.Text;
 
 namespace flightManagementSystem.models
 {
+
     internal class Booking
     {
-        public int bookingId;
-        public string seatNumber;
-        public string bookingDate;
-        public decimal BookingtotalPrice { get; private set; }
-        public string BookingStatus; //Confirmed | Cancelled
+        private static int counter = 1;
+        public string BookingId { get;}
+        public string PassengerId{ get; set; }
+        public string FlightId { get; set; }
 
-        public decimal calculateTotalPrice(int price,int count) {
-            BookingtotalPrice = price*count;
-            return BookingtotalPrice;
+
+        public string BookingseatNumber { get; set; }
+        public DateTime bookingDate { get; private set; }
+        public decimal BookingtotalPrice { get; set; }
+        public string BookingStatus { get; set; } //Confirmed | Cancelled
+
+        public Booking() {
+            BookingId = "BK" + counter.ToString("D3");
+            counter++;
+            BookingStatus = "Confirmed";
+            bookingDate = DateTime.Today;
         }
+
 
     }
 }

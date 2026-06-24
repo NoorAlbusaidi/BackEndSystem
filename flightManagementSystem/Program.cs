@@ -126,7 +126,7 @@ namespace flightManagementSystem
             model = Console.ReadLine();
             model = model.Trim();
             
-            while (string.IsNullOrWhiteSpace(model) || !Regex.IsMatch(model, @"^[a-zA-Z0-9\s]+$"))
+            while (string.IsNullOrWhiteSpace(model) || !Regex.IsMatch(model, @"^[a-zA-Z0-9-\s]+$"))
             {
                 Console.WriteLine("Invalid model. Try again");
                 Console.Write("Enter the aircraft's model: ");
@@ -290,23 +290,23 @@ namespace flightManagementSystem
             // input flight details
             //validating the origin
             Console.Write("Enter origin: ");
-            origin = Console.ReadLine().Trim();
+            origin = Console.ReadLine().Trim().ToLower();
 
             while (string.IsNullOrWhiteSpace(origin) || !Regex.IsMatch(origin, @"^[a-zA-Z\s]+$"))
             {
                 Console.WriteLine("Invalid origin. Letters only.");
                 Console.Write("Enter origin: ");
-                origin = Console.ReadLine().Trim();
+                origin = Console.ReadLine().Trim().ToLower();
             }
 
             // validating the destination
             Console.Write("Enter destination: ");
-            destination = Console.ReadLine().Trim();
+            destination = Console.ReadLine().Trim().ToLower();
             while (string.IsNullOrWhiteSpace(destination) || !Regex.IsMatch(destination, @"^[a-zA-Z\s]+$"))
             {
                 Console.WriteLine("Invalid destination. Letters only.");
                 Console.Write("Enter destination: ");
-                destination = Console.ReadLine().Trim();
+                destination = Console.ReadLine().Trim().ToLower();
             }
 
             //validating departure date
@@ -358,6 +358,8 @@ namespace flightManagementSystem
             // create a flight
             Flight f = new Flight
             {
+                AircraftId = aircraftId,
+                PilotId = pilotId,
                 FlightOrigin = origin,
                 FlightDestination = destination,
                 FlightDepartureDate = dateStr,
@@ -374,6 +376,105 @@ namespace flightManagementSystem
             context.flights.Add(f);
 
             Console.WriteLine("Flight scheduled successfully with code: " + f.FlightCode);
+
+        }
+
+        public static void BookFlight() {
+            string passengerId;
+            string destination;
+            string code;
+
+            //Identify Passenger
+            Console.Write("Enter Passenger ID: ");
+            passengerId = Console.ReadLine().Trim();
+
+           //validating the passenger id
+            while (string.IsNullOrWhiteSpace(passengerId) || !Regex.IsMatch(passengerId, @"^[A-Z0-9]+$"))
+            {
+                Console.WriteLine("\nInvalid passenger Id. Try again");
+                Console.Write("Enter Passenger ID: ");
+                passengerId = Console.ReadLine().Trim();
+            }
+            Passenger passenger = context.passengers.FirstOrDefault(p => p.PassengerId == passengerId);
+
+            if (passenger == null)
+            {
+                Console.WriteLine("Passenger not found.");
+                return;
+            }
+
+            //Choosing the destination
+            Console.Write("Enter destination: ");
+            destination = Console.ReadLine().Trim().ToLower();
+            //validating
+            while (string.IsNullOrWhiteSpace(destination) || !Regex.IsMatch(destination, @"^[a-zA-Z\s]+$"))
+            {
+                Console.WriteLine("Invalid destination. Letters only.");
+                Console.Write("Enter destination: ");
+                destination = Console.ReadLine().Trim().ToLower();
+            }
+
+            //showing available flights with passenger destination
+            List<Flight> availableFlights = context.flights
+                                            .Where(f => f.FlightDestination == destination &&
+                                             f.FlightStatus == "Scheduled" &&
+                                             f.AvailableSeats > 0)
+                                             .ToList();
+
+
+            Console.WriteLine("The available flights of " + destination + " destination");
+            //Display the flights
+            foreach (Flight f in availableFlights)
+            {
+                Console.WriteLine($"Code: {f.FlightCode} \nSeats: {f.AvailableSeats} \nPrice: {f.FlightTicketPrice}");
+                Console.WriteLine("===================");
+            }
+
+            //select a flight
+            Console.Write("Enter flight code: ");
+            code = Console.ReadLine().Trim();
+
+            while (string.IsNullOrWhiteSpace(code) || !Regex.IsMatch(code, @"^[A-Z0-9]+$"))
+            {
+                Console.WriteLine("\nInvalid code. Try again");
+                Console.Write("Enter flight code: ");
+                code = Console.ReadLine().Trim();
+            }
+
+            Flight selectedFlight = availableFlights.FirstOrDefault(f => f.FlightCode == code);
+
+            if (selectedFlight == null)
+            {
+                Console.WriteLine("No flight by this code.");
+                return;
+            }
+
+            char[] columns = { 'A', 'B', 'C', 'D' }; // seats per row
+            int seatsPerRow = columns.Length;
+            Aircraft selectedAircraft = context.aircrafts.FirstOrDefault(a => a.AircraftId == selectedFlight.AircraftId);
+            int bookedSeats = selectedAircraft.TotalSeats - selectedFlight.AvailableSeats;
+            int row = (bookedSeats / seatsPerRow) + 1;
+            int colIndex = bookedSeats % seatsPerRow;
+            string seatNum = columns[colIndex] + row.ToString();
+
+            //Create a Booking
+            Booking booking = new Booking
+            {
+                PassengerId = passenger.PassengerId,
+                FlightId = selectedFlight.FlightId,
+                BookingtotalPrice = selectedFlight.FlightTicketPrice,
+                BookingseatNumber = seatNum,
+            };
+
+            //Decrease Available Seats
+            selectedFlight.availableSeatsDecrease();
+
+            //Save Booking
+            context.bookings.Add(booking);
+
+            Console.WriteLine("Booking successful!");
+            Console.WriteLine("Seat: " + booking.BookingseatNumber);
+            Console.WriteLine("Price: " + booking.BookingtotalPrice+" OMR");
 
         }
 
@@ -416,6 +517,7 @@ namespace flightManagementSystem
                         ScheduleFlight();
                         break;
                     case 6:
+                        BookFlight();
                         break;
                     case 7:
                         break;

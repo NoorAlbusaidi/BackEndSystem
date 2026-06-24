@@ -8,6 +8,10 @@ namespace flightManagementSystem.models
     {
         private static int counter = 1;
         public string FlightId { get;}
+        public string AircraftId { get; set; }
+
+        public string PilotId { get; set; }
+
         public string FlightCode { get; set; }
         public string FlightOrigin { get; set; } //Departure airport / city
         public string FlightDestination { get; set; } //Arrival airport / city
