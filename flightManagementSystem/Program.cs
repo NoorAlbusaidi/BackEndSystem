@@ -1,5 +1,6 @@
 ﻿using flightManagementSystem.models;
 using Microsoft.Win32;
+using System.Globalization;
 using System.Numerics;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -217,7 +218,7 @@ namespace flightManagementSystem
 
 
         }
-
+       
         public static void ViewFlights() {
             if (context.flights.Count == 0)
             {
@@ -241,6 +242,141 @@ namespace flightManagementSystem
             }
 
         }
+
+    
+        public static void ScheduleFlight() {
+            string origin;
+            string destination;
+            DateTime date;
+            DateTime time;
+            decimal price;
+            // select aircraft
+            Console.Write("Enter Aircraft ID: ");
+    string aircraftId = Console.ReadLine();
+    aircraftId = aircraftId.Trim();
+    while (string.IsNullOrWhiteSpace(aircraftId) || !Regex.IsMatch(aircraftId, @"^[A-Z0-9]+$"))
+    {
+        Console.WriteLine("\nInvalid aircraft id. Try again");
+        Console.Write("Enter Aircraft ID: ");
+        aircraftId = Console.ReadLine();
+        aircraftId = aircraftId.Trim();
+
+    }
+    Aircraft selectedAircraft = context.aircrafts.FirstOrDefault(a => a.AircraftId == aircraftId);
+    if (selectedAircraft == null) {
+                Console.WriteLine("\nThere is no aircraft by this ID");
+                return;
+    }
+
+    // select pilot
+    Console.Write("Enter Pilot ID: ");
+    string pilotId = Console.ReadLine();
+            pilotId = pilotId.Trim();
+            while (string.IsNullOrWhiteSpace(pilotId) || !Regex.IsMatch(pilotId, @"^[A-Z0-9]+$"))
+            {
+                Console.WriteLine("\nInvalid pilot id. Try again");
+                Console.Write("Enter Pilot ID: ");
+                pilotId = Console.ReadLine();
+                pilotId = aircraftId.Trim();
+
+            }
+            Pilot selectedPilot = context.pilots.FirstOrDefault(p => p.PilotId == pilotId && p.IsAvailable);
+            if (selectedPilot == null)
+            {
+                Console.WriteLine("\nThere is no pilot found by this ID or not available");
+                return;
+            }
+
+            // input flight details
+            //validating the origin
+            Console.Write("Enter origin: ");
+            origin = Console.ReadLine().Trim();
+
+            while (string.IsNullOrWhiteSpace(origin) || !Regex.IsMatch(origin, @"^[a-zA-Z\s]+$"))
+            {
+                Console.WriteLine("Invalid origin. Letters only.");
+                Console.Write("Enter origin: ");
+                origin = Console.ReadLine().Trim();
+            }
+
+            // validating the destination
+            Console.Write("Enter destination: ");
+            destination = Console.ReadLine().Trim();
+            while (string.IsNullOrWhiteSpace(destination) || !Regex.IsMatch(destination, @"^[a-zA-Z\s]+$"))
+            {
+                Console.WriteLine("Invalid destination. Letters only.");
+                Console.Write("Enter destination: ");
+                destination = Console.ReadLine().Trim();
+            }
+
+            //validating departure date
+            Console.Write("Enter departure date(dd-MM-yyyy): ");
+            while (!DateTime.TryParseExact(
+           Console.ReadLine(),
+           "dd-MM-yyyy",
+           CultureInfo.InvariantCulture,
+           DateTimeStyles.None,
+           out date) || date.Date < DateTime.Today) //only accept today and future dates
+            {
+                Console.WriteLine("Invalid date.");
+                Console.Write("Enter departure date (dd-MM-yyyy): ");
+            }
+            string dateStr = date.ToString("dd-MM-yyyy");
+
+            //validating departure time
+            Console.Write("Enter departure time(HH:mm): ");
+            while (!DateTime.TryParseExact(
+           Console.ReadLine(),
+           "HH:mm",
+           CultureInfo.InvariantCulture, //Ignore the computer’s language/region settings and use a fixed standard format
+           DateTimeStyles.None, //Do NOT allow any extra formatting or adjustments
+           out time))
+            {
+                Console.WriteLine("Invalid time format.");
+                Console.Write("Enter departure time (HH:mm): ");
+            }
+            string timeStr = time.ToString("HH:MM tt");
+
+            //validating ticket price
+            Console.Write("Enter ticket price: ");
+            while (!decimal.TryParse(Console.ReadLine(), out price) || price <= 0)
+            {
+                Console.WriteLine("Invalid price. Enter a positive number.");
+                Console.Write("Enter ticket price: ");
+            }
+
+            string code;
+            string[] airlines = { "EK", "QR", "BA" };
+            Random rnd = new Random();
+
+            do
+            {
+                code = airlines[rnd.Next(airlines.Length)] + rnd.Next(100, 999);
+            }
+            while (context.flights.Any(f => f.FlightCode == code));
+
+            // create a flight
+            Flight f = new Flight
+            {
+                FlightOrigin = origin,
+                FlightDestination = destination,
+                FlightDepartureDate = dateStr,
+                FlightDepartureTime = timeStr,
+                FlightTicketPrice = price,
+                AvailableSeats = selectedAircraft.TotalSeats,
+                FlightCode = code
+            };
+
+            // update pilot to isAvailable = false
+            selectedPilot.AssignFlight();
+
+            //add new flight
+            context.flights.Add(f);
+
+            Console.WriteLine("Flight scheduled successfully with code: " + f.FlightCode);
+
+        }
+
         static void Main(string[] args)
         {
             int choice;
@@ -277,6 +413,7 @@ namespace flightManagementSystem
                         ViewFlights();
                         break;
                     case 5:
+                        ScheduleFlight();
                         break;
                     case 6:
                         break;
