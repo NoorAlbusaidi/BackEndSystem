@@ -247,6 +247,7 @@ namespace flightManagementSystem
                         AddAircraft();
                         break;
                     case 3:
+                        RegisterPilot();
                         break;
                     case 4:
                         break;
