@@ -11,7 +11,7 @@ namespace flightManagementSystem.models
         public string BookingId { get;}
         public string PassengerId{ get; set; }
         public string FlightId { get; set; }
-
+        public string FlightCode { get; set; }
 
         public string BookingseatNumber { get; set; }
         public DateTime bookingDate { get; private set; }
@@ -21,7 +21,7 @@ namespace flightManagementSystem.models
         public Booking() {
             BookingId = "BK" + counter.ToString("D3");
             counter++;
-            BookingStatus = "Confirmed";
+            BookingStatus = "confirmed";
             bookingDate = DateTime.Today;
         }
 

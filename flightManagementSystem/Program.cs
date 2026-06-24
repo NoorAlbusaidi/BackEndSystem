@@ -464,6 +464,7 @@ namespace flightManagementSystem
                 FlightId = selectedFlight.FlightId,
                 BookingtotalPrice = selectedFlight.FlightTicketPrice,
                 BookingseatNumber = seatNum,
+                FlightCode = selectedFlight.FlightCode,
             };
 
             //Decrease Available Seats
@@ -478,6 +479,72 @@ namespace flightManagementSystem
 
         }
 
+        public static void CancelBooking() {
+            string bookingId;
+            Console.Write("Enter Booking ID: ");
+            bookingId = Console.ReadLine();
+
+            //validating the id
+            while (string.IsNullOrWhiteSpace(bookingId) || !Regex.IsMatch(bookingId, @"^[A-Z0-9]+$"))
+            {
+                Console.WriteLine("\nInvalid booking Id. Try again");
+                Console.Write("Enter booking ID: ");
+                bookingId = Console.ReadLine().Trim();
+            }
+
+            Booking booking = context.bookings.FirstOrDefault(b => b.BookingId == bookingId);
+
+            if (booking == null)
+            {
+                Console.WriteLine("Booking not found.");
+                return;
+            }
+
+            //Check if already cancelled
+            if (booking.BookingStatus.ToLower() == "cancelled")
+            {
+                Console.WriteLine("Booking is already cancelled.");
+                return;
+            }
+
+            //Find the Flight
+            Flight flight = context.flights.FirstOrDefault(f => f.FlightId == booking.FlightId);
+
+            if (flight == null)
+            {
+                Console.WriteLine("Flight not found.");
+                return;
+            }
+
+            //Update Booking
+            booking.BookingStatus = "cancelled".ToLower();
+
+            //Return Seat to Flight
+            flight.availableSeatsIncrease();
+
+            //Free the seat
+            booking.BookingseatNumber = null;
+
+            Console.WriteLine("Booking cancelled successfully.");
+
+            //view details of cancelled booking
+            List <Booking> cancelledBookings = context.bookings
+                                                .Where(b => b.BookingStatus.ToLower() == "cancelled")
+                                                .ToList();
+
+            if (cancelledBookings.Count == 0) {
+                Console.WriteLine("No cancelled bookings found.");
+                return;
+            }
+
+            foreach (Booking b in cancelledBookings)
+            {
+                Console.WriteLine("\nCancelled booking details: ");
+                Console.WriteLine("Booking ID: " + b.BookingId);
+                Console.WriteLine("Passenger ID: " + b.PassengerId);
+                Console.WriteLine("Flight Code: " + b.FlightCode);
+            }
+        }
         static void Main(string[] args)
         {
             int choice;
@@ -520,6 +587,7 @@ namespace flightManagementSystem
                         BookFlight();
                         break;
                     case 7:
+                        CancelBooking();
                         break;
                     case 8:
                         break;
