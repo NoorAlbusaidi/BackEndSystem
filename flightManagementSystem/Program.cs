@@ -250,6 +250,7 @@ namespace flightManagementSystem
             DateTime date;
             DateTime time;
             decimal price;
+            int durationMinutes;
             // select aircraft
             Console.Write("Enter Aircraft ID: ");
     string aircraftId = Console.ReadLine();
@@ -345,6 +346,7 @@ namespace flightManagementSystem
                 Console.Write("Enter ticket price: ");
             }
 
+            //flight code
             string code;
             string[] airlines = { "EK", "QR", "BA" };
             Random rnd = new Random();
@@ -354,6 +356,14 @@ namespace flightManagementSystem
                 code = airlines[rnd.Next(airlines.Length)] + rnd.Next(100, 999);
             }
             while (context.flights.Any(f => f.FlightCode == code));
+
+            //flight duration
+            Console.Write("Enter flight duration in minutes: ");
+            while (!int.TryParse(Console.ReadLine(), out durationMinutes) || durationMinutes <= 0)
+            {
+                Console.WriteLine("Invalid duration. Enter positive minutes.");
+                Console.Write("Enter flight duration in minutes: ");
+            }
 
             // create a flight
             Flight f = new Flight
@@ -366,7 +376,8 @@ namespace flightManagementSystem
                 FlightDepartureTime = timeStr,
                 FlightTicketPrice = price,
                 AvailableSeats = selectedAircraft.TotalSeats,
-                FlightCode = code
+                FlightCode = code,
+                FlightDuration = durationMinutes,
             };
 
             // update pilot to isAvailable = false
@@ -383,6 +394,9 @@ namespace flightManagementSystem
             string passengerId;
             string destination;
             string code;
+            int duration;
+            int minutes;
+            int hours;
 
             //Identify Passenger
             Console.Write("Enter Passenger ID: ");
@@ -424,9 +438,15 @@ namespace flightManagementSystem
 
             Console.WriteLine("The available flights of " + destination + " destination");
             //Display the flights
+            
             foreach (Flight f in availableFlights)
             {
-                Console.WriteLine($"Code: {f.FlightCode} \nSeats: {f.AvailableSeats} \nPrice: {f.FlightTicketPrice}");
+                duration = f.FlightDuration;
+                hours = duration / 60;
+                minutes = duration % 60;
+
+                Console.WriteLine($"Duration: {hours}h {minutes}m");
+                Console.WriteLine($"Code: {f.FlightCode} \nSeats: {f.AvailableSeats} \nPrice: {f.FlightTicketPrice} \nDuration: {hours}h {minutes}m");
                 Console.WriteLine("===================");
             }
 
@@ -545,6 +565,8 @@ namespace flightManagementSystem
                 Console.WriteLine("Flight Code: " + b.FlightCode);
             }
         }
+
+
         static void Main(string[] args)
         {
             int choice;

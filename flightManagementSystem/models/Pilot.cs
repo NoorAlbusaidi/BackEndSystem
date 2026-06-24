@@ -13,7 +13,7 @@ namespace flightManagementSystem.models
         public string pilotPhone { get; set; }
 
         public string PilotLicenseNumber { get; set; }
-        public int FlightHours { get; set; }
+        public int FlightHours { get; private set; }
 
         //protect availability
         public bool IsAvailable { get; private set; }
@@ -33,6 +33,10 @@ namespace flightManagementSystem.models
         public void CompleteFlight()
         {
             IsAvailable = true;
+        }
+
+        public void PilotHours(int hours) {
+            FlightHours = FlightHours + hours;
         }
     }
 }
