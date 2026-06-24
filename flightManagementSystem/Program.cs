@@ -566,6 +566,53 @@ namespace flightManagementSystem
             }
         }
 
+        public static void DepartFlight() {
+            string code;
+            Console.Write("Enter flight code: ");
+            code = Console.ReadLine().Trim().ToUpper();
+
+            //validate the flight code
+            while (string.IsNullOrWhiteSpace(code) || !Regex.IsMatch(code, @"^[A-Z0-9]+$"))
+            {
+                Console.WriteLine("\nInvalid code. Try again");
+                Console.Write("Enter flight code: ");
+                code = Console.ReadLine().Trim().ToUpper();
+            }
+            Flight selectedFlight = context.flights.FirstOrDefault(f => f.FlightCode == code);
+
+            //while because you are in the departure phase
+            while (selectedFlight == null)
+            {
+                Console.WriteLine("Flight not found. Try again.");
+                Console.Write("Enter flight code: ");
+                code = Console.ReadLine().Trim().ToUpper();
+
+                //what I want to test every time in while
+                selectedFlight = context.flights.FirstOrDefault(f => f.FlightCode.Equals(code, StringComparison.OrdinalIgnoreCase));
+            }
+
+            //change the status to departed
+            if (selectedFlight.FlightStatus == "departed")
+            {
+                Console.WriteLine("Flight already departed.");
+                return;
+            }
+
+            selectedFlight.FlightStatus = "departed";
+
+            Pilot pilot = context.pilots.FirstOrDefault(p => p.PilotId == selectedFlight.PilotId);
+
+            if (pilot != null)
+            {
+                pilot.PilotHours(selectedFlight.FlightDuration);
+            }
+
+            Console.WriteLine("Flight departed successfully.");
+            selectedFlight.FlightDetails();
+            pilot.PilotInfo();
+
+
+        }
 
         static void Main(string[] args)
         {
@@ -612,12 +659,13 @@ namespace flightManagementSystem
                         CancelBooking();
                         break;
                     case 8:
+                        DepartFlight();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");
                         break;
                 }//switch (choice)
-                Console.WriteLine("---Services---");
+                Console.WriteLine("\n---Services---");
                 Console.WriteLine("(1)  Register a Passenger");
                 Console.WriteLine("(2)  Add an Aircraft");
                 Console.WriteLine("(3)  Register a Pilot");

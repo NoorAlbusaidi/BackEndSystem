@@ -8,6 +8,8 @@ namespace flightManagementSystem.models
     internal class Pilot
     {
         private static int counter = 1;
+        private static int hours;
+        private static int minutes;
         public string PilotId { get;}
         public string PilotName { get; set; }
         public string pilotPhone { get; set; }
@@ -37,6 +39,16 @@ namespace flightManagementSystem.models
 
         public void PilotHours(int hours) {
             FlightHours = FlightHours + hours;
+        }
+
+        public void PilotInfo() {
+            Console.WriteLine("\n--- Pilot Information ---");
+            Console.WriteLine("Pilot Name: " + PilotName);
+            Console.WriteLine("License Number: " + PilotLicenseNumber);
+            hours = FlightHours / 60;
+            minutes = FlightHours % 60;
+            Console.WriteLine($"Total Flight Hours: {hours} h {minutes} m");
+
         }
     }
 }

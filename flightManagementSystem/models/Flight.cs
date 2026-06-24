@@ -25,7 +25,7 @@ namespace flightManagementSystem.models
         public Flight() {
             FlightId = "FL" + counter.ToString("D3");
             counter++;
-            FlightStatus = "Scheduled";
+            FlightStatus = "scheduled";
 
 
         }
@@ -37,6 +37,17 @@ namespace flightManagementSystem.models
             AvailableSeats++;
         }
 
+        public void FlightDetails() {
+            Console.WriteLine("\n--- Flight Details ---");
+            Console.WriteLine("Flight Code: " + FlightCode);
+            Console.WriteLine("Origin: " +FlightOrigin);
+            Console.WriteLine("Destination: " + FlightDestination);
+            Console.WriteLine("Departure Date: " + FlightDepartureDate);
+            Console.WriteLine("Departure Time: " + FlightDepartureTime);
+            Console.WriteLine("Available Seats: " + AvailableSeats);
+            Console.WriteLine("Ticket Price: " + FlightTicketPrice);
+            Console.WriteLine("Status: " + FlightStatus);
+        }
 
     }
 }
