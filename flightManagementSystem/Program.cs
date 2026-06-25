@@ -793,7 +793,13 @@ namespace flightManagementSystem
 
         }
 
-
+        public static void Pause()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            Console.Clear();
+        }
         static void Main(string[] args)
         {
             int choice;
@@ -858,8 +864,8 @@ namespace flightManagementSystem
                         break;
                 }//switch (choice)
 
-
-                Console.WriteLine("\n---Services---");
+                Pause();
+                Console.WriteLine("---Services---");
                 Console.WriteLine("(1)  Register a Passenger");
                 Console.WriteLine("(2)  Add an Aircraft");
                 Console.WriteLine("(3)  Register a Pilot");
