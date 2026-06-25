@@ -431,12 +431,12 @@ namespace flightManagementSystem
             //showing available flights with passenger destination
             List<Flight> availableFlights = context.flights
                                             .Where(f => f.FlightDestination == destination &&
-                                             f.FlightStatus == "Scheduled" &&
+                                             f.FlightStatus == "scheduled" &&
                                              f.AvailableSeats > 0)
                                              .ToList();
 
 
-            Console.WriteLine("The available flights of " + destination + " destination");
+            Console.WriteLine("\nThe available flights of " + destination + " destination:");
             //Display the flights
             
             foreach (Flight f in availableFlights)
@@ -445,7 +445,6 @@ namespace flightManagementSystem
                 hours = duration / 60;
                 minutes = duration % 60;
 
-                Console.WriteLine($"Duration: {hours}h {minutes}m");
                 Console.WriteLine($"Code: {f.FlightCode} \nSeats: {f.AvailableSeats} \nPrice: {f.FlightTicketPrice} \nDuration: {hours}h {minutes}m");
                 Console.WriteLine("===================");
             }
@@ -493,7 +492,7 @@ namespace flightManagementSystem
             //Save Booking
             context.bookings.Add(booking);
 
-            Console.WriteLine("Booking successful!");
+            Console.WriteLine("Booking successful with ID: "+ booking.BookingId);
             Console.WriteLine("Seat: " + booking.BookingseatNumber);
             Console.WriteLine("Price: " + booking.BookingtotalPrice+" OMR");
 
@@ -590,9 +589,15 @@ namespace flightManagementSystem
                 //what I want to test every time in while
                 selectedFlight = context.flights.FirstOrDefault(f => f.FlightCode.Equals(code, StringComparison.OrdinalIgnoreCase));
             }
+            //flight cannot be departed if has no bookings
+            var flightCodes = context.bookings.Where(f => f.FlightCode == selectedFlight.FlightCode).ToList();
+            if (flightCodes.All(b=>b.BookingStatus == "cancelled")) {
+                Console.WriteLine("Flight has no bookings can't be departed.");
+                return;
 
+            }
             //change the status to departed
-            if (selectedFlight.FlightStatus == "departed")
+            else if (selectedFlight.FlightStatus.ToLower() == "departed")
             {
                 Console.WriteLine("Flight already departed.");
                 return;
@@ -626,6 +631,9 @@ namespace flightManagementSystem
             Console.WriteLine("(6)  Book a Flight");
             Console.WriteLine("(7)  Cancel a Booking");
             Console.WriteLine("(8)  Depart a Flight");
+            Console.WriteLine("(9)  Cancel a Flight");
+            Console.WriteLine("(10) Passenger Booking History");
+            Console.WriteLine("(11) Flight Revenue & Load Factor Report");
             Console.WriteLine("(0)  Exit");
 
             Console.Write("Enter your choice: ");
@@ -674,6 +682,9 @@ namespace flightManagementSystem
                 Console.WriteLine("(6)  Book a Flight");
                 Console.WriteLine("(7)  Cancel a Booking");
                 Console.WriteLine("(8)  Depart a Flight");
+                Console.WriteLine("(9)  Cancel a Flight");
+                Console.WriteLine("(10) Passenger Booking History");
+                Console.WriteLine("(11) Flight Revenue & Load Factor Report");
                 Console.WriteLine("(0)  Exit");
                 Console.Write("Enter your choice: ");
                 
