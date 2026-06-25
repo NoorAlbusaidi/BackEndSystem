@@ -114,9 +114,9 @@ namespace flightManagementSystem
             };
 
             context.passengers.Add(p);
-
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Passenger added successfully with id: "+ p.PassengerId);
-
+            Console.ResetColor();
         }
 
         public static void AddAircraft() {
@@ -155,7 +155,9 @@ namespace flightManagementSystem
 
             context.aircrafts.Add(a);
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Aircraft added successfully with id: " + a.AircraftId);
+            Console.ResetColor();
         }
 
         public static void RegisterPilot() {
@@ -214,12 +216,9 @@ namespace flightManagementSystem
             };
 
             context.pilots.Add(p);
-
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Pilot added successfully with id: " + p.PilotId);
-
- 
-
-
+            Console.ResetColor();
         }
        
         public static void ViewFlights() {
@@ -233,7 +232,8 @@ namespace flightManagementSystem
 
             foreach (Flight f in context.flights)
             {
-                Console.WriteLine("-----------------------------------");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                
                 Console.WriteLine("Flight Code: " + f.FlightCode);
                 Console.WriteLine("Origin: " + f.FlightOrigin);
                 Console.WriteLine("Destination: " + f.FlightDestination);
@@ -242,6 +242,9 @@ namespace flightManagementSystem
                 Console.WriteLine("Available Seats: " + f.AvailableSeats);
                 Console.WriteLine("Ticket Price: " + f.FlightTicketPrice);
                 Console.WriteLine("Status: " + f.FlightStatus);
+                Console.WriteLine("-----------------------------------");
+
+                Console.ResetColor();
             }
 
         }
@@ -388,9 +391,9 @@ namespace flightManagementSystem
 
             //add new flight
             context.flights.Add(f);
-
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Flight scheduled successfully with code: " + f.FlightCode);
-
+            Console.ResetColor();
         }
 
         public static void BookFlight() {
@@ -494,10 +497,12 @@ namespace flightManagementSystem
 
             //Save Booking
             context.bookings.Add(booking);
-
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Booking successful with ID: "+ booking.BookingId);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Seat: " + booking.BookingseatNumber);
             Console.WriteLine("Price: " + booking.BookingtotalPrice+" OMR");
+            Console.ResetColor();
 
         }
 
@@ -509,7 +514,9 @@ namespace flightManagementSystem
             //validating the id
             while (string.IsNullOrWhiteSpace(bookingId) || !Regex.IsMatch(bookingId, @"^[A-Z0-9]+$"))
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nInvalid booking Id. Try again");
+                Console.ResetColor();
                 Console.Write("Enter booking ID: ");
                 bookingId = Console.ReadLine().Trim();
             }
@@ -518,6 +525,7 @@ namespace flightManagementSystem
 
             if (booking == null)
             {
+
                 Console.WriteLine("Booking not found.");
                 return;
             }
@@ -547,7 +555,9 @@ namespace flightManagementSystem
             //Free the seat
             booking.BookingseatNumber = null;
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Booking cancelled successfully.");
+            Console.ResetColor();
 
             //view details of cancelled booking
             List <Booking> cancelledBookings = context.bookings
@@ -561,10 +571,12 @@ namespace flightManagementSystem
 
             foreach (Booking b in cancelledBookings)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("\nCancelled booking details: ");
                 Console.WriteLine("Booking ID: " + b.BookingId);
                 Console.WriteLine("Passenger ID: " + b.PassengerId);
                 Console.WriteLine("Flight Code: " + b.FlightCode);
+                Console.ResetColor();
             }
         }
 
@@ -615,10 +627,12 @@ namespace flightManagementSystem
                 pilot.PilotHours(selectedFlight.FlightDuration);
             }
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Flight departed successfully.");
+            Console.ForegroundColor = ConsoleColor.Yellow;
             selectedFlight.FlightDetails();
             pilot.PilotInfo();
-
+            Console.ResetColor();
 
         }
 
@@ -681,9 +695,12 @@ namespace flightManagementSystem
             //confirm that all bookings are cancelled
             if (flight.AvailableSeats == aircraftTotalSeats)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("All bookings were successfully cancelled.");
                 Console.WriteLine("Flight cancelled successfully.");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"{cancelledCount} booking(s) were cancelled.");
+                Console.ResetColor();
             }
             else
             {
@@ -728,7 +745,7 @@ namespace flightManagementSystem
             foreach (Booking booking in passengerBookings)
             {
                 Flight flight = context.flights.FirstOrDefault(f => f.FlightCode == booking.FlightCode);
-
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("\n---Passenger History---");
                 flight.FlightDetails();
                 booking.viewBookingInfo();
@@ -740,6 +757,7 @@ namespace flightManagementSystem
             }
 
             Console.WriteLine($"Total Spent (Confirmed Bookings): {totalSpent} OMR");
+            Console.ResetColor();
         }
 
         public static void FlightRevenueLoadFactorReport() {
@@ -784,11 +802,13 @@ namespace flightManagementSystem
             context.reports = context.reports.OrderByDescending(r => r.Revenue).ToList();
             foreach (FlightReport item in context.reports)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Flight Code: " + item.FlightCode);
                 Console.WriteLine("Route: " + item.Route);
                 Console.WriteLine("Confirmed Bookings: " + item.ConfirmedBookings);
                 Console.WriteLine("Revenue: " + item.Revenue);
                 Console.WriteLine("Load Factor: " + item.LoadFactor.ToString("F2") + "%");
+                Console.ResetColor();
             }
 
         }
@@ -803,6 +823,7 @@ namespace flightManagementSystem
         static void Main(string[] args)
         {
             int choice;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("---Flight Management Services---");
             Console.WriteLine("(1)  Register a Passenger");
             Console.WriteLine("(2)  Add an Aircraft");
@@ -816,7 +837,7 @@ namespace flightManagementSystem
             Console.WriteLine("(10) Passenger Booking History");
             Console.WriteLine("(11) Flight Revenue & Load Factor Report");
             Console.WriteLine("(0)  Exit");
-
+            Console.ResetColor();
             Console.Write("Enter your choice: ");
             //TryParse(): ignores leading and trailing spaces
             while (!int.TryParse(Console.ReadLine(), out choice)) {
@@ -865,6 +886,7 @@ namespace flightManagementSystem
                 }//switch (choice)
 
                 Pause();
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("---Services---");
                 Console.WriteLine("(1)  Register a Passenger");
                 Console.WriteLine("(2)  Add an Aircraft");
@@ -878,6 +900,7 @@ namespace flightManagementSystem
                 Console.WriteLine("(10) Passenger Booking History");
                 Console.WriteLine("(11) Flight Revenue & Load Factor Report");
                 Console.WriteLine("(0)  Exit");
+                Console.ResetColor();
                 Console.Write("Enter your choice: ");
                 
                 //validate user choice
