@@ -18,7 +18,8 @@ namespace flightManagementSystem
             bookings = new List<Booking>(),
             flights = new List<Flight>(),
             passengers = new List<Passenger>(),
-            pilots = new List<Pilot>()
+            pilots = new List<Pilot>(),
+            reports = new List<FlightReport>()
         };
         public static void RegisterPassenger()
         {
@@ -691,6 +692,94 @@ namespace flightManagementSystem
 
         }
 
+        public static void PassengerBookingHistory() {
+            //Identify paddenger id
+            Console.Write("Enter Passenger ID: ");
+            string passengerId = Console.ReadLine().Trim();
+
+            //validating the passenger id
+            while (string.IsNullOrWhiteSpace(passengerId) || !Regex.IsMatch(passengerId, @"^[A-Z0-9]+$"))
+            {
+                Console.WriteLine("\nInvalid passenger Id. Try again");
+                Console.Write("Enter Passenger ID: ");
+                passengerId = Console.ReadLine().Trim();
+            }
+
+            //Verify Passenger Exists
+            Passenger passenger = context.passengers.FirstOrDefault(p => p.PassengerId == passengerId);
+
+            if (passenger == null)
+            {
+                Console.WriteLine("Passenger not found.");
+                return;
+            }
+
+            //Get All Bookings for This Passenger
+            List<Booking> passengerBookings = context.bookings.Where(b => b.PassengerId == passengerId).ToList();
+
+            if (passengerBookings.Count == 0)
+            {
+                Console.WriteLine("This passenger has no booking history.");
+                return;
+            }
+
+            //Display Booking Details
+            decimal totalSpent = 0;
+            foreach (Booking booking in passengerBookings)
+            {
+                Flight flight = context.flights.FirstOrDefault(f => f.FlightCode == booking.FlightCode);
+
+                Console.WriteLine("\n---Passenger History---");
+                flight.FlightDetails();
+                booking.viewBookingInfo();
+
+                if (booking.BookingStatus.ToLower() == "confirmed".ToLower())
+                {
+                    totalSpent += booking.BookingtotalPrice;
+                }
+            }
+
+            Console.WriteLine($"Total Spent (Confirmed Bookings): {totalSpent} OMR");
+        }
+
+        public static void FlightRevenueLoadFactorReport() {
+            int confirmedBookings;
+            decimal revenue;
+            Aircraft aircraft;
+            //Total Confirmed Bookings
+            foreach (Flight flight in context.flights)
+            {
+                 confirmedBookings = context.bookings
+                    .Count(b => b.FlightId == flight.FlightId &&
+                                b.BookingStatus.ToLower() == "confirmed".ToLower());
+
+                //Total Revenue
+                revenue = context.bookings.Where(b => b.FlightId == flight.FlightId &&
+                                   b.BookingStatus.ToLower() == "confirmed".ToLower())
+                                  .Sum(b => b.BookingtotalPrice);
+
+
+                // Aircraft assigned to this flight
+                 aircraft = context.aircrafts.FirstOrDefault(a => a.AircraftId == flight.AircraftId);
+
+                // Calculate load factor
+                double loadFactor = 0;
+
+                if (aircraft != null && aircraft.TotalSeats > 0)
+                {
+                    loadFactor = (double)confirmedBookings / aircraft.TotalSeats * 100;
+                }
+
+                Console.WriteLine("--------------------------------");
+                Console.WriteLine("Flight Code: " + flight.FlightCode);
+                Console.WriteLine("Route: " + flight.FlightOrigin + " -> " + flight.FlightDestination);
+                Console.WriteLine("Confirmed Bookings: " + confirmedBookings);
+                Console.WriteLine("Revenue: " + revenue);
+                Console.WriteLine("Load Factor: " + loadFactor.ToString("F2") + "%");
+            }
+
+
+        }
         static void Main(string[] args)
         {
             int choice;
@@ -745,6 +834,10 @@ namespace flightManagementSystem
                         CancelFlight();
                         break;
                     case 10:
+                        PassengerBookingHistory();
+                        break;
+                    case 11:
+                        FlightRevenueLoadFactorReport();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");

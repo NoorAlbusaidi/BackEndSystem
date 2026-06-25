@@ -12,5 +12,6 @@ namespace flightManagementSystem
         public List<Flight> flights = new List<Flight>();
         public List<Passenger> passengers = new List<Passenger>();
         public List<Pilot> pilots = new List<Pilot>();
+        public List<FlightReport> reports = new List<FlightReport>();
     }
 }

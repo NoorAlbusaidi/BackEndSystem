@@ -25,6 +25,11 @@ namespace flightManagementSystem.models
             bookingDate = DateTime.Today;
         }
 
+        public void viewBookingInfo() {
+            Console.WriteLine($"Seat Number : {BookingseatNumber}");
+            Console.WriteLine($"Price Paid  : {BookingtotalPrice} OMR");
+            Console.WriteLine($"Status      : {BookingStatus}");
 
+        }
     }
 }
