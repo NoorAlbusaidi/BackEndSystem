@@ -767,19 +767,33 @@ namespace flightManagementSystem
 
                 if (aircraft != null && aircraft.TotalSeats > 0)
                 {
+                    //(double)-->  division becomes floating-point division
                     loadFactor = (double)confirmedBookings / aircraft.TotalSeats * 100;
                 }
 
-                Console.WriteLine("--------------------------------");
-                Console.WriteLine("Flight Code: " + flight.FlightCode);
-                Console.WriteLine("Route: " + flight.FlightOrigin + " -> " + flight.FlightDestination);
-                Console.WriteLine("Confirmed Bookings: " + confirmedBookings);
-                Console.WriteLine("Revenue: " + revenue);
-                Console.WriteLine("Load Factor: " + loadFactor.ToString("F2") + "%");
+                context.reports.Add(new FlightReport
+                {
+                    FlightCode = flight.FlightCode,
+                    Route = flight.FlightOrigin + " -> " + flight.FlightDestination,
+                    ConfirmedBookings = confirmedBookings,
+                    Revenue = revenue,
+                    LoadFactor = loadFactor
+                });
             }
 
+            context.reports = context.reports.OrderByDescending(r => r.Revenue).ToList();
+            foreach (FlightReport item in context.reports)
+            {
+                Console.WriteLine("Flight Code: " + item.FlightCode);
+                Console.WriteLine("Route: " + item.Route);
+                Console.WriteLine("Confirmed Bookings: " + item.ConfirmedBookings);
+                Console.WriteLine("Revenue: " + item.Revenue);
+                Console.WriteLine("Load Factor: " + item.LoadFactor.ToString("F2") + "%");
+            }
 
         }
+
+
         static void Main(string[] args)
         {
             int choice;
@@ -843,6 +857,8 @@ namespace flightManagementSystem
                         Console.WriteLine("Invalid choice");
                         break;
                 }//switch (choice)
+
+
                 Console.WriteLine("\n---Services---");
                 Console.WriteLine("(1)  Register a Passenger");
                 Console.WriteLine("(2)  Add an Aircraft");
