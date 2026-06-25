@@ -11,6 +11,7 @@ namespace flightManagementSystem
     internal class Program
     {
 
+        public static int aircraftTotalSeats;
         public static FlightContext context = new FlightContext
         {
             aircrafts = new List<Aircraft>(),
@@ -142,6 +143,7 @@ namespace flightManagementSystem
                 Console.WriteLine("Invalid number of seats");
                 Console.Write("Enter the total seats of the aircraft: ");
             }
+            aircraftTotalSeats = totalSeats;
 
             //add an Aircraft
             Aircraft a = new Aircraft
@@ -619,6 +621,76 @@ namespace flightManagementSystem
 
         }
 
+        public static void CancelFlight() {
+            string flightCode;
+            //Find the Flight
+            Console.Write("Enter Flight Code: ");
+            flightCode = Console.ReadLine().Trim().ToUpper();
+
+            //validate the flight code
+            while (string.IsNullOrWhiteSpace(flightCode) || !Regex.IsMatch(flightCode, @"^[A-Z0-9]+$"))
+            {
+                Console.WriteLine("\nInvalid code. Try again");
+                Console.Write("Enter flight code: ");
+                flightCode = Console.ReadLine().Trim().ToUpper();
+            }
+            Flight flight = context.flights.FirstOrDefault(f => f.FlightCode == flightCode);
+            
+            if (flight == null)
+            {
+                Console.WriteLine("Flight not found.");
+                return;
+            }
+
+            //Check if Already Cancelled
+            if (flight.FlightStatus.ToLower() == "cancelled".ToLower())
+            {
+                Console.WriteLine("Flight is already cancelled.");
+                return;
+            }
+
+            //Cancel the Flight
+            flight.FlightStatus = "cancelled".ToLower();
+
+            //Cancel Every Booking related to the cancelled flight
+            List<Booking> affectedBookings = context.bookings
+                                             .Where(b => b.FlightCode == flight.FlightCode &&
+                                              b.BookingStatus.ToLower() == "confirmed".ToLower())
+                                             .ToList();
+
+            //cancel them
+            foreach (Booking booking in affectedBookings)
+            {
+                booking.BookingStatus = "cancelled".ToLower();
+                booking.BookingseatNumber = null;
+                //increase the number of available seat
+                flight.availableSeatsIncrease();
+            }
+
+            int cancelledCount = affectedBookings.Count;
+
+            //Make Pilot Available Again
+            Pilot pilot = context.pilots.FirstOrDefault(p => p.PilotId == flight.PilotId);
+
+            if (pilot != null)
+            {
+                pilot.IsAvailable = true;
+            }
+
+            //confirm that all bookings are cancelled
+            if (flight.AvailableSeats == aircraftTotalSeats)
+            {
+                Console.WriteLine("All bookings were successfully cancelled.");
+                Console.WriteLine("Flight cancelled successfully.");
+                Console.WriteLine($"{cancelledCount} booking(s) were cancelled.");
+            }
+            else
+            {
+                Console.WriteLine("Some seats are still occupied.");
+            }
+
+        }
+
         static void Main(string[] args)
         {
             int choice;
@@ -668,6 +740,11 @@ namespace flightManagementSystem
                         break;
                     case 8:
                         DepartFlight();
+                        break;
+                    case 9:
+                        CancelFlight();
+                        break;
+                    case 10:
                         break;
                     default:
                         Console.WriteLine("Invalid choice");

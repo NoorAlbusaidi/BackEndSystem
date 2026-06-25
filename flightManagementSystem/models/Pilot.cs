@@ -18,7 +18,7 @@ namespace flightManagementSystem.models
         public int FlightHours { get; private set; }
 
         //protect availability
-        public bool IsAvailable { get; private set; }
+        public bool IsAvailable { get; set; }
 
         public Pilot() {
             IsAvailable = true;
