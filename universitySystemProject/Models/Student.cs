@@ -6,7 +6,7 @@ namespace universitySystemProject.Models
 {
     internal class Student
     {
-        public string StudentId { get; set; } //system auto-generated
+        public int StudentId { get; set; } //system auto-generated
         public string StudentName { get; set; } //user input
         public string StudentEmail { get; set; } //user input
 
