@@ -6,11 +6,11 @@ namespace universitySystemProject.Models
 {
     internal class Instructor
     {
-        public string InstructorId { get; set; }
-        public string InstructorName { get; set; }
-        public string InstructorEmail { get; set; }
-        public DateTime InstructorHireDate { get; set; }
-        public decimal InstructorSalary { get; set; }
-        public string InstructorAcademicTitle { get; set; }
+        public string InstructorId { get; set; } //auto-generated
+        public string InstructorName { get; set; } //user input
+        public string InstructorEmail { get; set; }//user input
+        public DateTime InstructorHireDate { get; set; }//user input
+        public decimal InstructorSalary { get; set; }//user input
+        public string InstructorAcademicTitle { get; set; }//user input
     }
 }

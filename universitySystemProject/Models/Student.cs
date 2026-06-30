@@ -6,16 +6,21 @@ namespace universitySystemProject.Models
 {
     internal class Student
     {
-        public string StudentId { get; set; }
-        public string StudentName { get; set; }
-        public String StudentEmail { get; set; }
+        public string StudentId { get; set; } //system auto-generated
+        public string StudentName { get; set; } //user input
+        public string StudentEmail { get; set; } //user input
 
-        public string StudentPhoneNum { get; set; }
+        public string StudentPhoneNum { get; set; }//user input
 
-        public DateTime StudentBirthDate { get; set; }
+        public DateTime StudentBirthDate { get; set; }//user input
 
-        public int StudentEnrollmentYear { get; set; }
+        public int StudentEnrollmentYear { get; set; }//user input
 
-        public decimal StudentGpa { get; set; }
+        public decimal StudentGpa { get; set; }//default value
+
+        public Student() {
+
+            StudentGpa = 0;
+        }
     }
 }

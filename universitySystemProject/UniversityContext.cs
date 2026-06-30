@@ -8,7 +8,7 @@ namespace universitySystemProject
 {
     internal class UniversityContext
     {
-        public List<Department> departments { get; set; }
+        public List<Department> departments { get; set; } 
         public List<Student> students { get; set; }
         public List<Course> courses { get; set; }
         public List<Enrollment> enrollments { get; set; }
