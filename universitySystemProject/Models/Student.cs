@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,7 @@ using System.Text;
 
 namespace universitySystemProject.Models
 {
+    
     internal class Student
     {
         [Key]
