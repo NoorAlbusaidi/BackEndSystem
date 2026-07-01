@@ -35,5 +35,8 @@ namespace universitySystemProject.Models
         [Required]
         [MaxLength(50)]
         public string InstructorAcademicTitle { get; set; }//user input
+
+        public Department Department { get; set; } //Navigation property
+        public ICollection<Course> Courses { get; set; }//navigation property#
     }
 }

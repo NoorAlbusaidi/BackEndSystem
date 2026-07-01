@@ -26,6 +26,7 @@ namespace universitySystemProject.Models
         [ForeignKey(nameof(Instructor))]
         public string? HeadInstructorId { get; set; } //foreign key (from list)
 
-        public Instructor Instructor { get; set; }
+        public Instructor Instructor { get; set; } //Navigation property#
+        public ICollection<Course> Courses { get; set; } //navigation property#
     }
 }

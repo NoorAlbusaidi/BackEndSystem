@@ -31,15 +31,18 @@ namespace universitySystemProject.Models
         [ForeignKey(nameof(Department))] //to avoid renaming issue
         //without ? means not null
         public int DepartmentId { get; set; } //foreign key of the department (from list)
-        public Department Department { get; set; }
+        public Department Department { get; set; } //navigation property
 
         [ForeignKey(nameof(Instructor))] 
         //int? → Foreign key is optional(NULL allowed).
         public int? InstructorId { get; set; }//foreign key of the Instructor (from list)
-        public Instructor Instructor { get; set; }
+        public Instructor Instructor { get; set; } //navigation property
 
         [Required]
         [MaxLength(20)]
         public string CourseSemesterOffered { get; set; }//user input
+
+        public ICollection<Student> Students { get; set; } //navigation property
+        public ICollection<Enrollment> enrollments { get; set; } //navigation property#
     }
 }
