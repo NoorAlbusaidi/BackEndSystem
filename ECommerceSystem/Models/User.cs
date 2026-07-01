@@ -44,6 +44,6 @@ namespace ECommerceSystem.Models
         [DefaultValue(true)]
         public bool UserIsActive { get; set; } // default value
 
-
+        
     }
 }
