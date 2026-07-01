@@ -15,7 +15,7 @@ namespace ECommerceSystem.Models
 
         [ForeignKey(nameof(user))]
         public int UserId { get; set; } 
-        public User user { get; set; }
+        public User user { get; set; } //navigation property
 
         [Required]
         public DateTime OrderDate { get; set; } = DateTime.Now; // default value
@@ -38,6 +38,9 @@ namespace ECommerceSystem.Models
         [MaxLength(50)]
         public string paymentMethod { get; set; } //user input
 
+        //public ICollection<Product> Products { get; set; } //navigation property
+
+        public virtual ICollection<Contain> ContainProducts { get; set; } //navigation property
 
     }
 }

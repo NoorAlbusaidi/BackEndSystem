@@ -44,6 +44,8 @@ namespace ECommerceSystem.Models
         [DefaultValue(true)]
         public bool UserIsActive { get; set; } // default value
 
-        
+        public ICollection<Order> orders { get; set; } //navigation property#
+        public ICollection<User> UserS { get; set; } //navigation property#
+
     }
 }
