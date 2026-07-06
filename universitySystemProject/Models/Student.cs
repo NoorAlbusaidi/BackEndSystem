@@ -37,8 +37,8 @@ namespace universitySystemProject.Models
         [DefaultValue(0.0)]
         public decimal StudentGpa { get; set; }//default value
 
-        public ICollection<Course> Courses { get; set; } //navigation property#
-        public ICollection<Enrollment> enrollments { get; set; } //navigation property#
+        public ICollection<Course> Courses { get; set; } //navigation property##
+        //public ICollection<Enrollment> enrollments { get; set; } //navigation property#
 
     }
 }
