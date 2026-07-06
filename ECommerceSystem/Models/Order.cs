@@ -7,12 +7,14 @@ using System.Text;
 
 namespace ECommerceSystem.Models
 {
+    [Table("Orders")]
     internal class Order
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; } // auto-generated
 
+        [Required]
         [ForeignKey(nameof(user))]
         public int UserId { get; set; } 
         public User user { get; set; } //navigation property##
@@ -21,7 +23,7 @@ namespace ECommerceSystem.Models
         public DateTime OrderDate { get; set; } = DateTime.Now; // default value
 
         [Required]
-        [Range(typeof(decimal), "0.01", "79228162514264337593543950335", ErrorMessage = "Price must be greater than 0.")]
+        [Range(typeof(decimal), "0.00", "79228162514264337593543950335", ErrorMessage = "Price must be greater than 0.")]
         public decimal OrderTotalAmount { get; set; }
 
         [Required]
@@ -40,7 +42,7 @@ namespace ECommerceSystem.Models
 
         //public ICollection<Product> Products { get; set; } //navigation property
 
-        public virtual ICollection<Contain> ContainProducts { get; set; } //navigation property
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; } //navigation property
 
     }
 }

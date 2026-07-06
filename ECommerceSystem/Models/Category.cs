@@ -7,6 +7,7 @@ using System.Text;
 
 namespace ECommerceSystem.Models
 {
+    [Table("Categorys")]
     [Index(nameof(CategoryName), IsUnique = true)]
     internal class Category
     {

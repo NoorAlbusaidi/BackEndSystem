@@ -7,9 +7,15 @@ using System.Text;
 
 namespace ECommerceSystem.Models
 {
-    [PrimaryKey(nameof(ProductId),nameof(OrderId))]
-    internal class Contain
+    //[PrimaryKey(nameof(ProductId),nameof(OrderId))]
+    [Table("OrderProduct")]
+    internal class OrderProduct
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int orderProductId { get; set; } // system generated
+
+
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }

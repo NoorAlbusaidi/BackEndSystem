@@ -7,6 +7,7 @@ using System.Text;
 
 namespace ECommerceSystem.Models
 {
+    [Table("Products")]
     internal class Product
     {
         [Key]
@@ -46,6 +47,6 @@ namespace ECommerceSystem.Models
 
         //public ICollection<Order> orders { get; set; } //navigation property
 
-        public virtual ICollection<Contain> ContainOrders { get; set; } //navigation property
+        public virtual ICollection<OrderProduct> ProductOrders { get; set; } //navigation property
     }
 }

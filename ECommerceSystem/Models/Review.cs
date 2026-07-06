@@ -6,6 +6,7 @@ using System.Text;
 
 namespace ECommerceSystem.Models
 {
+    [Table["Review"]]
     internal class Review
     {
         [Key]
@@ -13,9 +14,9 @@ namespace ECommerceSystem.Models
         public int ReviewId { get; set; } //auto-generated
 
         [Required]
-        [ForeignKey(nameof(user))]
+        [ForeignKey(nameof(User))]
         public int UserId { get; set; }
-        public User user { get; set; } //navigation property##
+        public User User { get; set; } //navigation property##
 
         [Required]
         [ForeignKey(nameof(Product))]

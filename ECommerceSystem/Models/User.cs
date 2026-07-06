@@ -8,8 +8,10 @@ using System.Text;
 
 namespace ECommerceSystem.Models
 {
+    [Table["Users"]]
     [Index(nameof(UserName), IsUnique = true)]
     [Index(nameof(UserEmail), IsUnique = true)]
+
     internal class User
     {
         [Key]
