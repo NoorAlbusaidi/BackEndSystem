@@ -24,6 +24,6 @@ namespace ECommerceSystem.Models
         [MaxLength(300)]
         public string? CategoryImageUrl { get; set; } // user input
 
-        public ICollection<Product> Products { get; set; } //navigation property#
+        public ICollection<Product> Products { get; set; } //navigation property##
     }
 }

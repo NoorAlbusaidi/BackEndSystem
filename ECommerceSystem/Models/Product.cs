@@ -38,8 +38,11 @@ namespace ECommerceSystem.Models
         [DefaultValue(true)]
         public bool ProductIsAvailable { get; set; } //default value
 
-        public Category Category { get; set; }
-        public ICollection<Review> Reviews { get; set; } //navigation property#
+        
+        [ForeignKey(nameof(Category))]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }//navigation property##
+        public ICollection<Review> Reviews { get; set; } //navigation property##
 
         //public ICollection<Order> orders { get; set; } //navigation property
 

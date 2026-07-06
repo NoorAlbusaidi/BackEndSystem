@@ -15,12 +15,12 @@ namespace ECommerceSystem.Models
         [Required]
         [ForeignKey(nameof(user))]
         public int UserId { get; set; }
-        public User user { get; set; } //navigation property
+        public User user { get; set; } //navigation property##
 
         [Required]
         [ForeignKey(nameof(Product))]
         public int ProduvtId { get; set; }
-        public Product Product { get; set; } //navigation property
+        public Product Product { get; set; } //navigation property##
 
         [Required]
         [Range(1,5)]

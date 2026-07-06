@@ -15,7 +15,7 @@ namespace ECommerceSystem.Models
 
         [ForeignKey(nameof(user))]
         public int UserId { get; set; } 
-        public User user { get; set; } //navigation property
+        public User user { get; set; } //navigation property##
 
         [Required]
         public DateTime OrderDate { get; set; } = DateTime.Now; // default value
