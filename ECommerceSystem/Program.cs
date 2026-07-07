@@ -146,15 +146,72 @@ namespace ECommerceSystem
             Console.WriteLine("Product added successfully.");
 
         }
+
+        public static void WriteProductReview() {
+            //Display all users
+            List<User> availableUsers = context.Users.ToList();
+            Console.WriteLine("==== USERS ====");
+            foreach (User u in availableUsers) {
+                Console.WriteLine($"{u.UserId} --> {u.UserName}");
+            }
+
+            //Display all products 
+            List<Product> availableProducts = context.Products.ToList();
+            Console.WriteLine("\n==== PRODUCTS ====");
+            foreach (Product p in availableProducts)
+            {
+                Console.WriteLine($"{p.ProductId} --> {p.ProductName}");
+            }
+
+            //data
+            Console.Write("\nEnter User Id: ");
+            int userId = int.Parse(Console.ReadLine());
+
+            Console.Write("\nEnter Product Id: ");
+            int productId = int.Parse(Console.ReadLine());
+
+            Console.Write("\nEnter Rating (1-5): ");
+            int rating = int.Parse(Console.ReadLine());
+
+            Console.Write("\nEnter Comment (optional): ");
+            string comment = Console.ReadLine();
+
+            //looking for the user and product ids if they are exsit
+            if (context.Users.Find(userId) == null)
+            {
+                Console.WriteLine("User not found.");
+                return;
+            }
+
+            if (context.Products.Find(productId) == null)
+            {
+                Console.WriteLine("Product not found.");
+                return;
+            }
+
+            //creating the review
+            Review review = new Review
+            {
+                UserId = userId,
+                ProductId = productId,
+                ReviewRating = rating,
+                ReviewComment = comment,
+            };
+
+            context.Reviews.Add(review);
+            context.SaveChanges();
+
+            Console.WriteLine("Review added successfully.");
+        }
         static void Main(string[] args)
         {
 
             int choice;
             Console.WriteLine("---Services---");
             Console.WriteLine("(1)  Register a new user");
-            Console.WriteLine("(2)  ");
+            Console.WriteLine("(2)  Add a New Product to a Category");
             Console.WriteLine("(3)  ");
-            Console.WriteLine("(4)  ");
+            Console.WriteLine("(4)  Write a Product Review");
             Console.WriteLine("(5)  ");
             Console.WriteLine("(6)  ");
             Console.WriteLine("(7)  ");
@@ -178,7 +235,7 @@ namespace ECommerceSystem
                         break;
 
                     case 2:
-
+                        AddNewProductCategory();
                         break;
 
                     case 3:
@@ -199,9 +256,9 @@ namespace ECommerceSystem
                 }//switch (choice)
                 Console.WriteLine("---Services---");
                 Console.WriteLine("(1)  Register a new user");
-                Console.WriteLine("(2)  ");
+                Console.WriteLine("(2)  Add a New Product to a Category");
                 Console.WriteLine("(3)  ");
-                Console.WriteLine("(4)  ");
+                Console.WriteLine("(4)  Write a Product Review");
                 Console.WriteLine("(5)  ");
                 Console.WriteLine("(6)  ");
                 Console.WriteLine("(7)  ");
