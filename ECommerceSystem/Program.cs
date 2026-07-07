@@ -203,6 +203,10 @@ namespace ECommerceSystem
 
             Console.WriteLine("Review added successfully.");
         }
+
+        public static void UpdateProductPriceAvailability() { 
+        
+        }
         static void Main(string[] args)
         {
 
@@ -239,6 +243,7 @@ namespace ECommerceSystem
                         break;
 
                     case 3:
+                        WriteProductReview();
                         break;
                     case 4:
                         break;
