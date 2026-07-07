@@ -84,7 +84,72 @@ namespace ECommerceSystem
         }
         static void Main(string[] args)
         {
-            RegisterNewUser();
+
+            int choice;
+            Console.WriteLine("---Services---");
+            Console.WriteLine("(1)  Register a new user");
+            Console.WriteLine("(2)  ");
+            Console.WriteLine("(3)  ");
+            Console.WriteLine("(4)  ");
+            Console.WriteLine("(5)  ");
+            Console.WriteLine("(6)  ");
+            Console.WriteLine("(7)  ");
+            Console.WriteLine("(8)  ");
+            Console.WriteLine("(0)  Exit");
+
+            Console.Write("Enter your choice: ");
+            //TryParse(): ignores leading and trailing spaces
+            while (!int.TryParse(Console.ReadLine(), out choice))
+            {
+                Console.WriteLine("Invalid choice you need to enter one number");
+                Console.Write("Enter your choice: ");
+            }
+
+            while (choice != 0)
+            {
+                switch (choice)
+                {
+                    case 1:
+                        RegisterNewUser();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }//switch (choice)
+                Console.WriteLine("---Services---");
+                Console.WriteLine("(1)  Register a new user");
+                Console.WriteLine("(2)  ");
+                Console.WriteLine("(3)  ");
+                Console.WriteLine("(4)  ");
+                Console.WriteLine("(5)  ");
+                Console.WriteLine("(6)  ");
+                Console.WriteLine("(7)  ");
+                Console.WriteLine("(8)  ");
+                Console.WriteLine("(0)  Exit");
+                Console.Write("Enter your choice: ");
+
+                //validate user choice
+                while (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.WriteLine("Invalid choice you need to enter one number");
+                    Console.Write("Enter your choice: ");
+                }
+
+            }//while (choice != 0)
         }
     }
 }
