@@ -299,7 +299,7 @@ namespace ECommerceSystem
                     case 6:
                         break;
                     case 7:
-
+                        DeleteReview();
                         break;
                     case 8:
                         break;
