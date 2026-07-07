@@ -252,6 +252,28 @@ namespace ECommerceSystem
             }
         }
 
+        public static void ViewAllProducts() {
+            List<Product> products = context.Products.ToList();
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No products found.");
+                return;
+            }
+            Console.WriteLine("\n===== Product Catalogue =====");
+
+            foreach (var product in products)
+            {
+                Console.WriteLine($"Product ID: {product.ProductId}");
+                Console.WriteLine($"Product Name: {product.ProductName}");
+                Console.WriteLine($"Product Price: {product.ProductPrice:C}");
+                Console.WriteLine($"Product Stock Quantity: {product.ProductStockQuantity}");
+                Console.WriteLine($"Product Available: {product.ProductIsAvailable}");
+                Console.WriteLine(new string('-', 40));
+            }
+
+        }
+
         static void Main(string[] args)
         {
 
@@ -264,7 +286,8 @@ namespace ECommerceSystem
             Console.WriteLine("(5)  Update Product Price and Availability");
             Console.WriteLine("(6)  ");
             Console.WriteLine("(7)  Delete a Review");
-            Console.WriteLine("(8)  ");
+            Console.WriteLine("(8)  View All Products (Get All)");
+            Console.WriteLine("(9)  ");
             Console.WriteLine("(0)  Exit");
 
             Console.Write("Enter your choice: ");
@@ -302,6 +325,7 @@ namespace ECommerceSystem
                         DeleteReview();
                         break;
                     case 8:
+                        ViewAllProducts();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");
@@ -315,7 +339,8 @@ namespace ECommerceSystem
                 Console.WriteLine("(5)  Update Product Price and Availability");
                 Console.WriteLine("(6)  ");
                 Console.WriteLine("(7)  Delete a Review");
-                Console.WriteLine("(8)  ");
+                Console.WriteLine("(8)  View All Products (Get All)");
+                Console.WriteLine("(9)  ");
                 Console.WriteLine("(0)  Exit");
                 Console.Write("Enter your choice: ");
 
