@@ -85,6 +85,7 @@ namespace ECommerceSystem
 
         public static void AddNewProductCategory()
         {
+
             // Display all categories
             //tolist because it is dbset
             List<Category> categories = context.Categories.ToList();
@@ -204,9 +205,37 @@ namespace ECommerceSystem
             Console.WriteLine("Review added successfully.");
         }
 
-        public static void UpdateProductPriceAvailability() { 
-        
+        public static void UpdateProductPriceAvailability() {
+            int prductID;
+            //THE PRODUCT 
+            Console.Write("Enter the product id: ");
+            prductID = int.Parse(Console.ReadLine());
+            Product product = context.Products.FirstOrDefault(p => p.ProductId == prductID);
+
+            //NEW VALUES
+            Console.Write("Enter new price: ");
+            decimal newPrice = decimal.Parse(Console.ReadLine());
+
+            Console.Write("Is the product available? (true/false): ");
+            bool isAvailable = bool.Parse(Console.ReadLine());
+
+            //update some of the product properties
+            if (product != null)
+            {
+                product.ProductPrice = newPrice;
+                product.ProductIsAvailable = isAvailable;
+                context.SaveChanges(); //EF Core detects changes, sends UPDATE SQL
+                Console.WriteLine("Product updated.");
+            }
+            else {
+                Console.WriteLine("Could not find the product");
+                return;
+            }
+            
         }
+
+
+
         static void Main(string[] args)
         {
 
@@ -216,7 +245,7 @@ namespace ECommerceSystem
             Console.WriteLine("(2)  Add a New Product to a Category");
             Console.WriteLine("(3)  ");
             Console.WriteLine("(4)  Write a Product Review");
-            Console.WriteLine("(5)  ");
+            Console.WriteLine("(5)  Update Product Price and Availability");
             Console.WriteLine("(6)  ");
             Console.WriteLine("(7)  ");
             Console.WriteLine("(8)  ");
@@ -245,9 +274,11 @@ namespace ECommerceSystem
                     case 3:
                         WriteProductReview();
                         break;
+
                     case 4:
                         break;
                     case 5:
+                        UpdateProductPriceAvailability();
                         break;
                     case 6:
                         break;
@@ -264,7 +295,7 @@ namespace ECommerceSystem
                 Console.WriteLine("(2)  Add a New Product to a Category");
                 Console.WriteLine("(3)  ");
                 Console.WriteLine("(4)  Write a Product Review");
-                Console.WriteLine("(5)  ");
+                Console.WriteLine("(5)  Update Product Price and Availability");
                 Console.WriteLine("(6)  ");
                 Console.WriteLine("(7)  ");
                 Console.WriteLine("(8)  ");
