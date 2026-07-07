@@ -82,6 +82,70 @@ namespace ECommerceSystem
             // After SaveChanges(), newUser.userId is now populated with the DB-assigned ID
             Console.WriteLine("New user ID: " + newUser.UserId);
         }
+
+        public static void AddNewProductCategory()
+        {
+            // Display all categories
+            //tolist because it is dbset
+            List<Category> categories = context.Categories.ToList();
+
+            Console.WriteLine("===== Categories =====");
+
+            foreach (Category category in categories)
+            {
+                Console.WriteLine($"{category.CategoryId} - {category.CategoryName}");
+
+            }
+
+            // Read category
+            Console.Write("\nEnter Category Id: ");
+            int categoryId = int.Parse(Console.ReadLine());
+
+            // Check if category exists
+            Category selectedCategory = context.Categories.Find(categoryId);
+
+            if (selectedCategory == null)
+            {
+                Console.WriteLine("Category not found.");
+                return;
+            }
+
+            // Read product details
+            Console.Write("Enter Product Name: ");
+            string productName = Console.ReadLine();
+
+            Console.Write("Enter Description: ");
+            string productDescription = Console.ReadLine();
+
+            Console.Write("Enter Price: ");
+            decimal productPrice = decimal.Parse(Console.ReadLine());
+
+            Console.Write("Enter Stock Quantity: ");
+            int stockQuantity = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter Image URL (optional): ");
+            string imageUrl = Console.ReadLine();
+
+            // Create product
+            Product product = new Product
+            {
+                ProductName = productName,
+                ProductDescription = productDescription,
+                ProductPrice = productPrice,
+                ProductStockQuantity = stockQuantity,
+                ProductImageUrl = imageUrl,
+
+                //Relationship
+                CategoryId = categoryId
+            };
+
+            // Save
+            context.Products.Add(product);
+            context.SaveChanges();
+
+            Console.WriteLine("Product added successfully.");
+
+        }
         static void Main(string[] args)
         {
 
@@ -112,8 +176,11 @@ namespace ECommerceSystem
                     case 1:
                         RegisterNewUser();
                         break;
+
                     case 2:
+
                         break;
+
                     case 3:
                         break;
                     case 4:
