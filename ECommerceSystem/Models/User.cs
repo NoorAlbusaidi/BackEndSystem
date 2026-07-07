@@ -43,8 +43,8 @@ namespace ECommerceSystem.Models
         [Required]
         public DateTime UserRegistrationDate { get; set; } = DateTime.Now; // auto-generated
 
-        [DefaultValue(true)]
-        public bool UserIsActive { get; set; } // default value
+        //[DefaultValue(true)]
+        public bool UserIsActive { get; set; } = true; // default value
 
         public ICollection<Order> orders { get; set; } //navigation property##
         public ICollection<Review> Reviews { get; set; } //navigation property##
