@@ -234,7 +234,23 @@ namespace ECommerceSystem
             
         }
 
-
+        public static void DeleteReview() {
+            int deletedReviewId;
+            Console.Write("Enter the review id you want to delete: ");
+            deletedReviewId = int.Parse(Console.ReadLine());
+            //Find --> searches by primary key only(checkes PKs)
+            Review review = context.Reviews.Find(deletedReviewId);
+            if (review != null)
+            {
+                context.Reviews.Remove(review);
+                context.SaveChanges();
+                Console.WriteLine("Review deleted.");
+            }
+            else {
+                Console.WriteLine("Could not find the Review with this id: "+ deletedReviewId);
+                return;
+            }
+        }
 
         static void Main(string[] args)
         {
@@ -247,7 +263,7 @@ namespace ECommerceSystem
             Console.WriteLine("(4)  Write a Product Review");
             Console.WriteLine("(5)  Update Product Price and Availability");
             Console.WriteLine("(6)  ");
-            Console.WriteLine("(7)  ");
+            Console.WriteLine("(7)  Delete a Review");
             Console.WriteLine("(8)  ");
             Console.WriteLine("(0)  Exit");
 
@@ -283,6 +299,7 @@ namespace ECommerceSystem
                     case 6:
                         break;
                     case 7:
+
                         break;
                     case 8:
                         break;
@@ -297,7 +314,7 @@ namespace ECommerceSystem
                 Console.WriteLine("(4)  Write a Product Review");
                 Console.WriteLine("(5)  Update Product Price and Availability");
                 Console.WriteLine("(6)  ");
-                Console.WriteLine("(7)  ");
+                Console.WriteLine("(7)  Delete a Review");
                 Console.WriteLine("(8)  ");
                 Console.WriteLine("(0)  Exit");
                 Console.Write("Enter your choice: ");
