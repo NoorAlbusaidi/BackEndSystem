@@ -20,7 +20,7 @@ namespace ECommerceSystem.Models
 
         [Required]
         [ForeignKey(nameof(Product))]
-        public int ProduvtId { get; set; }
+        public int ProductId { get; set; }
         public Product Product { get; set; } //navigation property##
 
         [Required]
