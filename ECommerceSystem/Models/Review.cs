@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ECommerceSystem.Models
 {
-    [Table["Review"]]
+    [Table("Reviews")]
     internal class Review
     {
         [Key]

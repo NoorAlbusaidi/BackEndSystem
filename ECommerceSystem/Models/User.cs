@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ECommerceSystem.Models
 {
-    [Table["Users"]]
+    [Table("Users")]
     [Index(nameof(UserName), IsUnique = true)]
     [Index(nameof(UserEmail), IsUnique = true)]
 
