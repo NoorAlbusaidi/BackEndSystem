@@ -504,6 +504,35 @@ namespace ECommerceSystem
                 }
             }
         }
+
+        //Advanced
+        public static void ViewOrderHistorywithDetails(){
+            int userId;
+            Console.WriteLine("Enter user ID: ");
+            userId = int.Parse(Console.ReadLine());
+
+            User user = context.Users
+                        .Include(u => u.orders) //loads the user's orders.
+                        .ThenInclude(o => o.OrderProducts) //loads the items in each order.
+                        .ThenInclude(i => i.Product) //loads the product for each order item.
+                        .FirstOrDefault(u => u.UserId == userId);
+
+            if (user == null) {
+                Console.WriteLine("User not found");
+                return;
+            }
+
+            foreach (Order order in user.orders ) {
+                Console.WriteLine($"\nOrder ID: {order.OrderId}");
+                Console.WriteLine($"Date: {order.OrderDate}");
+                Console.WriteLine($"Status: {order.OrderStatus}");
+                Console.WriteLine($"Total: {order.OrderTotalAmount}");
+                Console.WriteLine("Products:");
+                foreach (OrderProduct op in order.OrderProducts) {
+                    Console.WriteLine($"- {op.Product.ProductName}\nQuantity: {op.Quantity}\nPrice: {op.Product.ProductPrice}");
+                }
+            }
+        }
         static void Main(string[] args)
         {
 
@@ -519,6 +548,7 @@ namespace ECommerceSystem
             Console.WriteLine("(8)  View All Products (Get All)");
             Console.WriteLine("(9)  Filter Products by Category and Price Range");
             Console.WriteLine("(10) Get Category with All Its Products");
+            Console.WriteLine("(11) View Order History with Full Details");
             Console.WriteLine("(13) Add a category(testing)");
             Console.WriteLine("(0)  Exit");
 
@@ -574,6 +604,10 @@ namespace ECommerceSystem
                         GetCategorywithAllProducts();
                         break;
 
+                    case 11:
+
+                        break;
+
                     case 13:
                         AddCategory();
                         break;
@@ -594,6 +628,7 @@ namespace ECommerceSystem
                 Console.WriteLine("(8)  View All Products (Get All)");
                 Console.WriteLine("(9)  Filter Products by Category and Price Range");
                 Console.WriteLine("(10) Get Category with All Its Products");
+                Console.WriteLine("(11) View Order History with Full Details");
                 Console.WriteLine("(13) Add a category(testing)");
                 Console.WriteLine("(0)  Exit");
                 Console.Write("Enter your choice: ");
