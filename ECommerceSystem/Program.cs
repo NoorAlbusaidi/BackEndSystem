@@ -347,7 +347,7 @@ namespace ECommerceSystem
             {
                 Console.WriteLine($"{product.ProductId} - {product.ProductName} | Price: {product.ProductPrice} | Stock: {product.ProductStockQuantity}");
             }
-
+            decimal totalAmount = 0;
             while (true) {
                 Console.Write("\nEnter Product ID (0 to finish): ");
                 int productId = int.Parse(Console.ReadLine());
@@ -388,6 +388,21 @@ namespace ECommerceSystem
 
                 context.OrderProducts.Add(orderProduct);
 
+                // Calculate total
+                totalAmount += orderProduct.UnitPrice * quantity;
+
+                // Reduce stock
+                product.ProductStockQuantity -= quantity;
+
+                // Update order total
+                order.OrderTotalAmount = totalAmount;
+
+                context.SaveChanges();
+
+                Console.WriteLine("\nOrder placed successfully.");
+                Console.WriteLine($"Order ID: {order.OrderId}");
+                //:C --> display the value as currency
+                Console.WriteLine($"Total Amount: {order.OrderTotalAmount:C}");
             }//while(true)
 
         }
