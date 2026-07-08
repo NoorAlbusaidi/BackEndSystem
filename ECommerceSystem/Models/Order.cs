@@ -27,9 +27,8 @@ namespace ECommerceSystem.Models
         public decimal OrderTotalAmount { get; set; }
 
         [Required]
-        [DefaultValue("pending")]
         [MaxLength(30)]
-        public string OrderStatus { get; set; } //default value
+        public string OrderStatus { get; set; } = "Pending"; //default value
 
         [Required]
         [MaxLength(300)]
