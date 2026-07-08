@@ -440,6 +440,41 @@ namespace ECommerceSystem
 
         }
 
+        public static void CancelOrder() {
+            Console.Write("Enter Order ID: ");
+            int orderId = int.Parse(Console.ReadLine());
+
+            var order = context.Orders.FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                Console.WriteLine("Order not found.");
+                return;
+            }
+            if (order.OrderStatus.ToLower() == "cancelled")
+            {
+                Console.WriteLine("Order is already cancelled.");
+                return;
+            }
+            List<OrderProduct> orderProducts = context.OrderProducts.Where(op => op.OrderId == orderId).ToList();
+
+            foreach (OrderProduct item in orderProducts)
+            {
+                Product product = context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+
+                if (product != null)
+                {
+                    product.ProductStockQuantity += item.Quantity;
+                }
+            }
+
+            order.OrderStatus = "cancelled";
+
+            context.SaveChanges();
+
+            Console.WriteLine("Order cancelled successfully.");
+        }
+
         static void Main(string[] args)
         {
 
@@ -450,11 +485,11 @@ namespace ECommerceSystem
             Console.WriteLine("(3)  Place an Order");
             Console.WriteLine("(4)  Write a Product Review");
             Console.WriteLine("(5)  Update Product Price and Availability");
-            Console.WriteLine("(6)  ");
+            Console.WriteLine("(6)  Cancel an Order");
             Console.WriteLine("(7)  Delete a Review");
             Console.WriteLine("(8)  View All Products (Get All)");
             Console.WriteLine("(9)  Filter Products by Category and Price Range");
-            Console.WriteLine("00. Add a category(testing)");
+            Console.WriteLine("(10) Add a category(testing)");
             Console.WriteLine("(0)  Exit");
 
             Console.Write("Enter your choice: ");
@@ -490,6 +525,7 @@ namespace ECommerceSystem
                         break;
 
                     case 6:
+                        CancelOrder();
                         break;
 
                     case 7:
@@ -503,12 +539,15 @@ namespace ECommerceSystem
                     case 9:
                         FilterProductsCategoryPrice();
                         break;
-                    case 00:
+
+                    case 10:
                         AddCategory();
                         break;
+
                     default:
                         Console.WriteLine("Invalid choice");
                         break;
+
                 }//switch (choice)
                 Console.WriteLine("---Services---");
                 Console.WriteLine("(1)  Register a new user");
@@ -516,11 +555,11 @@ namespace ECommerceSystem
                 Console.WriteLine("(3)  Place an Order");
                 Console.WriteLine("(4)  Write a Product Review");
                 Console.WriteLine("(5)  Update Product Price and Availability");
-                Console.WriteLine("(6)  ");
+                Console.WriteLine("(6)  Cancel an Order");
                 Console.WriteLine("(7)  Delete a Review");
                 Console.WriteLine("(8)  View All Products (Get All)");
                 Console.WriteLine("(9)  Filter Products by Category and Price Range");
-                Console.WriteLine("(00) Add a category(testing)");
+                Console.WriteLine("(10) Add a category(testing)");
                 Console.WriteLine("(0)  Exit");
                 Console.Write("Enter your choice: ");
 
