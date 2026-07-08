@@ -7,6 +7,7 @@ namespace ECommerceSystem
     internal class Program
     {
         public static EcommerceContext context = new EcommerceContext();
+        //easy
         public static void RegisterNewUser() {
             string userName;
             string userEmail;
@@ -307,6 +308,41 @@ namespace ECommerceSystem
             }
         }
 
+        //Medium
+        public static void  PlaceOrder() {
+            string phoneNum;
+            //by using phone number will find the user Id
+            Console.Write("Enter your phone number: ");
+            phoneNum = Console.ReadLine();
+
+            User user = context.Users.FirstOrDefault(ph=>ph.UserPhoneNum == phoneNum);
+
+            if (user == null) {
+                Console.WriteLine("user not found");
+                return;
+            }
+            //order details
+            Console.Write("Enter Shipping Address: ");
+            string address = Console.ReadLine();
+
+            Console.Write("Enter Payment Method: ");
+            string paymentMethod = Console.ReadLine();
+
+            // Create Order
+            Order order = new Order
+            {
+                UserId = user.UserId,
+                OrderShippingAddress = address,
+                paymentMethod = paymentMethod,
+                OrderTotalAmount = 0
+            };
+
+            // Save first to generate OrderId
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+        }
+
         static void Main(string[] args)
         {
 
@@ -314,7 +350,7 @@ namespace ECommerceSystem
             Console.WriteLine("---Services---");
             Console.WriteLine("(1)  Register a new user");
             Console.WriteLine("(2)  Add a New Product to a Category");
-            Console.WriteLine("(3)  ");
+            Console.WriteLine("(3)  Place an Order");
             Console.WriteLine("(4)  Write a Product Review");
             Console.WriteLine("(5)  Update Product Price and Availability");
             Console.WriteLine("(6)  ");
@@ -371,7 +407,7 @@ namespace ECommerceSystem
                 Console.WriteLine("---Services---");
                 Console.WriteLine("(1)  Register a new user");
                 Console.WriteLine("(2)  Add a New Product to a Category");
-                Console.WriteLine("(3)  ");
+                Console.WriteLine("(3)  Place an Order");
                 Console.WriteLine("(4)  Write a Product Review");
                 Console.WriteLine("(5)  Update Product Price and Availability");
                 Console.WriteLine("(6)  ");
