@@ -341,6 +341,55 @@ namespace ECommerceSystem
             context.Orders.Add(order);
             context.SaveChanges();
 
+            Console.WriteLine("\n===== Products =====");
+            List<Product> products = context.Products.ToList();
+            foreach (Product product in products)
+            {
+                Console.WriteLine($"{product.ProductId} - {product.ProductName} | Price: {product.ProductPrice} | Stock: {product.ProductStockQuantity}");
+            }
+
+            while (true) {
+                Console.Write("\nEnter Product ID (0 to finish): ");
+                int productId = int.Parse(Console.ReadLine());
+
+                if (productId == 0)
+                    break;
+
+                Product product = context.Products.FirstOrDefault(p => p.ProductId == productId);
+                if (product == null)
+                {
+                    Console.WriteLine("Product not found.");
+                    continue;
+                }
+
+                Console.Write("Enter Quantity: ");
+                int quantity = int.Parse(Console.ReadLine());
+
+                if (quantity <= 0)
+                {
+                    Console.WriteLine("Quantity must be greater than zero.");
+                    continue;
+                }
+
+                if (quantity > product.ProductStockQuantity)
+                {
+                    Console.WriteLine("Insufficient stock.");
+                    continue;
+                }
+
+                // Create bridge entity (OrderProduct)
+                OrderProduct orderProduct = new OrderProduct
+                {
+                    OrderId = order.OrderId,
+                    ProductId = product.ProductId,
+                    Quantity = quantity,
+                    UnitPrice = product.ProductPrice
+                };
+
+                context.OrderProducts.Add(orderProduct);
+
+            }//while(true)
+
         }
 
         static void Main(string[] args)
