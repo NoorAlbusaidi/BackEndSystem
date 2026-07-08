@@ -107,6 +107,9 @@ namespace ECommerceSystem.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("orderProductId");
 
                     b.HasIndex("OrderId");
@@ -167,7 +170,7 @@ namespace ECommerceSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
 
-                    b.Property<int>("ProduvtId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("ReviewComment")
@@ -185,7 +188,7 @@ namespace ECommerceSystem.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("ProduvtId");
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -290,7 +293,7 @@ namespace ECommerceSystem.Migrations
                 {
                     b.HasOne("ECommerceSystem.Models.Product", "Product")
                         .WithMany("Reviews")
-                        .HasForeignKey("ProduvtId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
