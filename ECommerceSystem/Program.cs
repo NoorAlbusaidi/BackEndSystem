@@ -1,7 +1,8 @@
 ﻿using ECommerceSystem.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Identity;
 namespace ECommerceSystem
 {
     internal class Program
@@ -475,6 +476,34 @@ namespace ECommerceSystem
             Console.WriteLine("Order cancelled successfully.");
         }
 
+        public static void GetCategorywithAllProducts() {
+            int catId;
+            Console.Write("Enter the category id: ");
+            catId = int.Parse(Console.ReadLine());
+
+            Category category = context.Categories
+                                .Include(c => c.Products)
+                                .FirstOrDefault(p => p.CategoryId == catId);
+            if (category == null) {
+                Console.WriteLine("Mentioned ID not found ");
+                return;
+            }
+            Console.WriteLine("==== CATEGORY ====");
+            Console.WriteLine($"Category Name: {category.CategoryName}\nCategory Description: {category.CategoryDescription}");
+            Console.WriteLine($"\n==== Products of {category.CategoryName} ====");
+            //to check if there are products or not
+            if (!category.Products.Any())
+            {
+                Console.WriteLine("No products found in this category.");
+            }
+            else
+            {
+                foreach (Product item in category.Products)
+                {
+                    Console.WriteLine($"{item.ProductId}. {item.ProductName}");
+                }
+            }
+        }
         static void Main(string[] args)
         {
 
@@ -489,7 +518,8 @@ namespace ECommerceSystem
             Console.WriteLine("(7)  Delete a Review");
             Console.WriteLine("(8)  View All Products (Get All)");
             Console.WriteLine("(9)  Filter Products by Category and Price Range");
-            Console.WriteLine("(10) Add a category(testing)");
+            Console.WriteLine("(10) Get Category with All Its Products");
+            Console.WriteLine("(13) Add a category(testing)");
             Console.WriteLine("(0)  Exit");
 
             Console.Write("Enter your choice: ");
@@ -541,6 +571,10 @@ namespace ECommerceSystem
                         break;
 
                     case 10:
+                        GetCategorywithAllProducts();
+                        break;
+
+                    case 13:
                         AddCategory();
                         break;
 
@@ -559,7 +593,8 @@ namespace ECommerceSystem
                 Console.WriteLine("(7)  Delete a Review");
                 Console.WriteLine("(8)  View All Products (Get All)");
                 Console.WriteLine("(9)  Filter Products by Category and Price Range");
-                Console.WriteLine("(10) Add a category(testing)");
+                Console.WriteLine("(10) Get Category with All Its Products");
+                Console.WriteLine("(13) Add a category(testing)");
                 Console.WriteLine("(0)  Exit");
                 Console.Write("Enter your choice: ");
 
