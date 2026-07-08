@@ -308,6 +308,39 @@ namespace ECommerceSystem
             }
         }
 
+        public static void AddCategory()
+        {
+            Console.Write("Enter Category Name: ");
+            string categoryName = Console.ReadLine();
+
+            // Check if the category already exists
+            Category existingCategory = context.Categories.FirstOrDefault(c => c.CategoryName == categoryName);
+
+            if (existingCategory != null)
+            {
+                Console.WriteLine("Category already exists.");
+                return;
+            }
+
+            Console.Write("Enter Category Description: ");
+            string? categoryDescription = Console.ReadLine();
+
+            Console.Write("Enter Category Image URL (optional): ");
+            string? categoryImageUrl = Console.ReadLine();
+
+            Category category = new Category
+            {
+                CategoryName = categoryName,
+                CategoryDescription = categoryDescription,
+                CategoryImageUrl = categoryImageUrl
+            };
+
+            context.Categories.Add(category);
+            context.SaveChanges();
+
+            Console.WriteLine("Category added successfully.");
+        }
+
         //Medium
         public static void  PlaceOrder() {
             string phoneNum;
@@ -421,6 +454,7 @@ namespace ECommerceSystem
             Console.WriteLine("(7)  Delete a Review");
             Console.WriteLine("(8)  View All Products (Get All)");
             Console.WriteLine("(9)  Filter Products by Category and Price Range");
+            Console.WriteLine("00. Add a category(testing)");
             Console.WriteLine("(0)  Exit");
 
             Console.Write("Enter your choice: ");
@@ -469,7 +503,9 @@ namespace ECommerceSystem
                     case 9:
                         FilterProductsCategoryPrice();
                         break;
-
+                    case 00:
+                        AddCategory();
+                        break;
                     default:
                         Console.WriteLine("Invalid choice");
                         break;
@@ -484,6 +520,7 @@ namespace ECommerceSystem
                 Console.WriteLine("(7)  Delete a Review");
                 Console.WriteLine("(8)  View All Products (Get All)");
                 Console.WriteLine("(9)  Filter Products by Category and Price Range");
+                Console.WriteLine("(00) Add a category(testing)");
                 Console.WriteLine("(0)  Exit");
                 Console.Write("Enter your choice: ");
 
