@@ -274,6 +274,39 @@ namespace ECommerceSystem
 
         }
 
+        public static void FilterProductsCategoryPrice() {
+            int selectedCategoryID;
+            decimal minPrice;
+            decimal maxPrice;
+            Console.Write("Enter the category ID: ");
+            selectedCategoryID = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter your minimum price: ");
+            minPrice = decimal.Parse(Console.ReadLine());
+
+            Console.Write("Enter your maximum price: ");
+            maxPrice = decimal.Parse(Console.ReadLine());
+            List<Product> filteredProducts = context.Products
+                                             .Where(p=>p.CategoryId == selectedCategoryID && p.ProductPrice>=minPrice && p.ProductPrice <= maxPrice)
+                                             .OrderBy(p => p.ProductPrice)
+                                             .ToList();
+            if (filteredProducts.Count == 0)
+            {
+                Console.WriteLine("No products found.");
+                return;
+            }
+
+            foreach (Product product in filteredProducts)
+            {
+                Console.WriteLine($"ID: {product.ProductId}");
+                Console.WriteLine($"Name: {product.ProductName}");
+                Console.WriteLine($"Price: {product.ProductPrice}");
+                Console.WriteLine($"Stock Quantity: {product.ProductStockQuantity}");
+                Console.WriteLine($"Available: {product.ProductIsAvailable}");
+                Console.WriteLine(new string('-', 40));
+            }
+        }
+
         static void Main(string[] args)
         {
 
@@ -287,7 +320,7 @@ namespace ECommerceSystem
             Console.WriteLine("(6)  ");
             Console.WriteLine("(7)  Delete a Review");
             Console.WriteLine("(8)  View All Products (Get All)");
-            Console.WriteLine("(9)  ");
+            Console.WriteLine("(9)  Filter Products by Category and Price Range");
             Console.WriteLine("(0)  Exit");
 
             Console.Write("Enter your choice: ");
@@ -316,6 +349,7 @@ namespace ECommerceSystem
 
                     case 4:
                         break;
+
                     case 5:
                         UpdateProductPriceAvailability();
                         break;
@@ -326,6 +360,9 @@ namespace ECommerceSystem
                         break;
                     case 8:
                         ViewAllProducts();
+                        break;
+                    case 9:
+                        FilterProductsCategoryPrice();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");
@@ -340,7 +377,7 @@ namespace ECommerceSystem
                 Console.WriteLine("(6)  ");
                 Console.WriteLine("(7)  Delete a Review");
                 Console.WriteLine("(8)  View All Products (Get All)");
-                Console.WriteLine("(9)  ");
+                Console.WriteLine("(9)  Filter Products by Category and Price Range");
                 Console.WriteLine("(0)  Exit");
                 Console.Write("Enter your choice: ");
 
