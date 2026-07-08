@@ -444,26 +444,32 @@ namespace ECommerceSystem
                         break;
 
                     case 3:
-                        WriteProductReview();
+                        PlaceOrder();
                         break;
 
                     case 4:
+                        WriteProductReview();
                         break;
 
                     case 5:
                         UpdateProductPriceAvailability();
                         break;
+
                     case 6:
                         break;
+
                     case 7:
                         DeleteReview();
                         break;
+
                     case 8:
                         ViewAllProducts();
                         break;
+
                     case 9:
                         FilterProductsCategoryPrice();
                         break;
+
                     default:
                         Console.WriteLine("Invalid choice");
                         break;
