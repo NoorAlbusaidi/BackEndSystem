@@ -28,5 +28,9 @@ namespace ECommerceSystem.Models
         [Range(1,999)]
         public int Quantity { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal UnitPrice { get; set; }
+
     }
 }

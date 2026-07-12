@@ -36,8 +36,8 @@ namespace ECommerceSystem.Models
         [Required]
         public DateTime ProductCreatedAt { get; set; } = DateTime.Now; //default value
 
-        [DefaultValue(true)]
-        public bool ProductIsAvailable { get; set; } //default value
+
+        public bool ProductIsAvailable { get; set; } = true; //default value
 
         
         [ForeignKey(nameof(Category))]
